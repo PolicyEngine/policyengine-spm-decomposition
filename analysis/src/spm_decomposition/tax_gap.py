@@ -1,10 +1,10 @@
-"""Federal tax gap by income decile: PE-computed vs CPS-reported income tax."""
+"""Federal tax gap by income decile: PE-computed vs CPS-reported federal tax."""
 
 import numpy as np
 
 
 def _weighted_quantiles(values, weights, quantiles):
-    """Compute weighted quantiles (same as in weights.py, duplicated to avoid coupling)."""
+    """Compute weighted quantiles."""
     sorted_idx = np.argsort(values)
     sorted_vals = values[sorted_idx]
     sorted_weights = weights[sorted_idx]
@@ -29,7 +29,12 @@ def _assign_decile(values, weights):
 
 
 def compute_tax_gap(sim, period=2024) -> list[dict]:
-    """Compute mean PE vs reported federal income tax by AGI decile.
+    """Compute mean PE vs reported federal tax by income decile.
+
+    Uses SPM-unit level variables:
+    - spm_unit_total_income_reported for income decile grouping
+    - spm_unit_federal_tax (PE-computed)
+    - spm_unit_federal_tax_reported (CPS-reported)
 
     Parameters
     ----------
@@ -45,12 +50,12 @@ def compute_tax_gap(sim, period=2024) -> list[dict]:
         ``decile``, ``mean_income``, ``pe_federal_tax``,
         ``reported_federal_tax``, ``gap``.
     """
-    agi = sim.calc("adjusted_gross_income", period=period)
-    income_tax_pe = sim.calc("income_tax", period=period)
-    income_tax_reported = sim.calc("income_tax_reported", period=period)
+    income = sim.calc("spm_unit_total_income_reported", period=period)
+    tax_pe = sim.calc("spm_unit_federal_tax", period=period)
+    tax_reported = sim.calc("spm_unit_federal_tax_reported", period=period)
 
-    values = agi.values
-    weights = agi._weights
+    values = np.asarray(income.values, dtype=float)
+    weights = np.asarray(income.weights, dtype=float)
     deciles = _assign_decile(values, weights)
 
     results = []
@@ -59,9 +64,9 @@ def compute_tax_gap(sim, period=2024) -> list[dict]:
         if np.any(mask):
             w = weights[mask]
             mean_inc = float(np.average(values[mask], weights=w))
-            mean_pe_tax = float(np.average(income_tax_pe.values[mask], weights=w))
+            mean_pe_tax = float(np.average(tax_pe.values[mask], weights=w))
             mean_reported_tax = float(
-                np.average(income_tax_reported.values[mask], weights=w)
+                np.average(tax_reported.values[mask], weights=w)
             )
         else:
             mean_inc = 0.0

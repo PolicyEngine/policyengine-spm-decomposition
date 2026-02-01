@@ -3,23 +3,11 @@
 import numpy as np
 
 from .config import INCOME_QUINTILE_LABELS, FAMILY_STRUCTURE_LABELS
+from .poverty import _map_spm_to_person
 
 
 def _weighted_quantiles(values, weights, quantiles):
-    """Compute weighted quantiles.
-
-    Parameters
-    ----------
-    values : np.ndarray
-    weights : np.ndarray
-    quantiles : list[float]
-        Values in [0, 1].
-
-    Returns
-    -------
-    np.ndarray
-        Quantile thresholds.
-    """
+    """Compute weighted quantiles."""
     sorted_idx = np.argsort(values)
     sorted_vals = values[sorted_idx]
     sorted_weights = weights[sorted_idx]
@@ -33,11 +21,7 @@ def _weighted_quantiles(values, weights, quantiles):
 
 
 def _assign_quintile(values, weights):
-    """Assign each observation to an income quintile (0-4).
-
-    Uses the person-level weighted distribution of ``values`` to define
-    quintile breakpoints, then assigns each person accordingly.
-    """
+    """Assign each observation to an income quintile (0-4)."""
     breakpoints = _weighted_quantiles(values, weights, [0.2, 0.4, 0.6, 0.8])
     quintile = np.zeros(len(values), dtype=int)
     for i, bp in enumerate(breakpoints):
@@ -45,14 +29,39 @@ def _assign_quintile(values, weights):
     return quintile
 
 
-def _compute_group_stats(sim, quintiles, family_is_joint, period):
+def _get_person_level_grouping(sim, period):
+    """Get income quintiles and family structure at person level.
+
+    Maps SPM-unit income and tax-unit joint status to person level.
+    """
+    # Income: SPM-unit level → person level
+    spm_income = sim.calc("spm_unit_net_income_reported", period=period)
+    person_income = _map_spm_to_person(sim, spm_income.values, period)
+
+    # Weights at person level
+    person_weight = sim.calc("person_weight", period=period).values
+
+    # Quintiles based on person-level income (with person weights)
+    quintiles = _assign_quintile(person_income, person_weight)
+
+    # Family structure: tax_unit_is_joint → map to person level
+    # tax_unit_is_joint is at tax_unit level
+    tax_unit_id = sim.calc("tax_unit_id", period=period).values
+    person_tax_unit_id = sim.calc("person_tax_unit_id", period=period).values
+    joint_values = sim.calc("tax_unit_is_joint", period=period).values.astype(float)
+    tu_id_to_idx = {int(tid): i for i, tid in enumerate(tax_unit_id)}
+    family_is_joint = np.array([joint_values[tu_id_to_idx[int(pid)]] for pid in person_tax_unit_id])
+
+    return quintiles, family_is_joint, person_weight
+
+
+def _compute_group_stats(sim, quintiles, family_is_joint, person_weight, period):
     """Compute per-group child poverty rate and child share for one simulation."""
     is_child = sim.calc("is_child", period=period).values
     person_in_poverty = sim.calc("person_in_poverty", period=period).values
-    weights = sim.calc("is_child", period=period)._weights
     child_mask = is_child == 1
 
-    total_children_weighted = float(np.sum(weights[child_mask]))
+    total_children_weighted = float(np.sum(person_weight[child_mask]))
     groups = []
 
     for q_idx, q_label in enumerate(INCOME_QUINTILE_LABELS):
@@ -63,10 +72,10 @@ def _compute_group_stats(sim, quintiles, family_is_joint, period):
                 & (quintiles == q_idx)
                 & (family_is_joint == is_joint_val)
             )
-            weighted_children = float(np.sum(weights[mask]))
+            weighted_children = float(np.sum(person_weight[mask]))
             if weighted_children > 0:
                 poverty_rate = float(
-                    np.average(person_in_poverty[mask], weights=weights[mask])
+                    np.average(person_in_poverty[mask], weights=person_weight[mask])
                 )
             else:
                 poverty_rate = 0.0
@@ -105,22 +114,11 @@ def compute_weight_rebalancing(raw_sim, enhanced_sim, period=2024) -> dict:
         ``{"groups": [{"label", "raw_cps_poverty_rate", "enhanced_cps_poverty_rate",
         "raw_cps_child_share", "enhanced_cps_child_share"}, ...]}``
     """
-    # Quintiles are defined on the RAW CPS income distribution
-    raw_income = raw_sim.calc("spm_unit_net_income_reported", period=period)
-    raw_weights = raw_income._weights
-    quintiles_raw = _assign_quintile(raw_income.values, raw_weights)
+    raw_quintiles, raw_joint, raw_pw = _get_person_level_grouping(raw_sim, period)
+    enh_quintiles, enh_joint, enh_pw = _get_person_level_grouping(enhanced_sim, period)
 
-    # For enhanced sim, compute quintiles on its own distribution
-    enh_income = enhanced_sim.calc("spm_unit_net_income_reported", period=period)
-    enh_weights = enh_income._weights
-    quintiles_enh = _assign_quintile(enh_income.values, enh_weights)
-
-    # Family structure: use tax_unit_is_joint as proxy
-    raw_joint = raw_sim.calc("tax_unit_is_joint", period=period).values
-    enh_joint = enhanced_sim.calc("tax_unit_is_joint", period=period).values
-
-    raw_groups = _compute_group_stats(raw_sim, quintiles_raw, raw_joint, period)
-    enh_groups = _compute_group_stats(enhanced_sim, quintiles_enh, enh_joint, period)
+    raw_groups = _compute_group_stats(raw_sim, raw_quintiles, raw_joint, raw_pw, period)
+    enh_groups = _compute_group_stats(enhanced_sim, enh_quintiles, enh_joint, enh_pw, period)
 
     # Merge raw and enhanced results by label
     merged = []

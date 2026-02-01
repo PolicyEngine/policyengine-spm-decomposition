@@ -34,8 +34,9 @@ def compute_state_results(period=YEAR) -> list[dict]:
 
         # Total weighted children
         is_child = sim.calc("is_child", period=period)
+        person_weight = sim.calc("person_weight", period=period)
         child_mask = is_child.values == 1
-        total_children = float(is_child._weights[child_mask].sum())
+        total_children = float(person_weight.values[child_mask].sum())
 
         results.append(
             {

@@ -1,31 +1,45 @@
 {
-  "_WARNING": "SAMPLE DATA - Will be replaced by Python package output. Values are approximations from prior analysis.",
   "waterfall": {
     "steps": [
-      {"label": "Census published (2024)", "value": 0.134},
-      {"label": "Raw CPS reported (2024)", "value": 0.1354},
-      {"label": "Raw CPS PE-computed (2024)", "value": 0.1390},
-      {"label": "Enhanced CPS reported (2024)", "value": 0.1844},
-      {"label": "Enhanced CPS PE-computed (2024)", "value": 0.2258}
+      {
+        "label": "Census published (2024)",
+        "value": 0.134
+      },
+      {
+        "label": "Raw CPS reported (2024)",
+        "value": 0.1156
+      },
+      {
+        "label": "Raw CPS PE-computed (2024)",
+        "value": 0.1354
+      },
+      {
+        "label": "Enhanced CPS reported (2024)",
+        "value": 0.1844
+      },
+      {
+        "label": "Enhanced CPS PE-computed (2024)",
+        "value": 0.2258
+      }
     ],
     "deltas": [
       {
         "from": "Census published (2024)",
         "to": "Raw CPS reported (2024)",
-        "delta": 0.0014,
+        "delta": -0.0184,
         "explanation": "Public-use ASEC vs internal Census file (privacy edits, minor corrections)"
       },
       {
         "from": "Raw CPS reported (2024)",
         "to": "Raw CPS PE-computed (2024)",
-        "delta": 0.0036,
+        "delta": 0.0198,
         "explanation": "PE tax/benefit modeling on raw CPS data"
       },
       {
         "from": "Raw CPS PE-computed (2024)",
         "to": "Enhanced CPS reported (2024)",
-        "delta": 0.0454,
-        "explanation": "Enhanced CPS weight recalibration to IRS SOI targets"
+        "delta": 0.049,
+        "explanation": "Enhanced CPS weight recalibration to IRS SOI targets + PUF income imputation"
       },
       {
         "from": "Enhanced CPS reported (2024)",
@@ -38,100 +52,155 @@
   "weight_rebalancing": {
     "groups": [
       {
-        "label": "Q1, single parent",
-        "raw_cps_poverty_rate": 0.42,
-        "enhanced_cps_poverty_rate": 0.51,
-        "raw_cps_child_share": 0.08,
-        "enhanced_cps_child_share": 0.10
+        "label": "Q1 / single parent",
+        "raw_cps_poverty_rate": 0.6436609154118453,
+        "enhanced_cps_poverty_rate": 0.6732471990494041,
+        "raw_cps_child_share": 0.092108906720638,
+        "enhanced_cps_child_share": 0.09682547213582486
       },
       {
-        "label": "Q1, married",
-        "raw_cps_poverty_rate": 0.28,
-        "enhanced_cps_poverty_rate": 0.35,
-        "raw_cps_child_share": 0.05,
-        "enhanced_cps_child_share": 0.07
+        "label": "Q1 / married",
+        "raw_cps_poverty_rate": 0.6905660374181813,
+        "enhanced_cps_poverty_rate": 0.6585557987638717,
+        "raw_cps_child_share": 0.036622443387002754,
+        "enhanced_cps_child_share": 0.057762423611934094
       },
       {
-        "label": "Q2, single parent",
-        "raw_cps_poverty_rate": 0.18,
-        "enhanced_cps_poverty_rate": 0.22,
-        "raw_cps_child_share": 0.10,
-        "enhanced_cps_child_share": 0.11
+        "label": "Q2 / single parent",
+        "raw_cps_poverty_rate": 0.18144329963388137,
+        "enhanced_cps_poverty_rate": 0.2605831963852913,
+        "raw_cps_child_share": 0.10053897303523696,
+        "enhanced_cps_child_share": 0.10409544008246445
       },
       {
-        "label": "Q2, married",
-        "raw_cps_poverty_rate": 0.08,
-        "enhanced_cps_poverty_rate": 0.10,
-        "raw_cps_child_share": 0.12,
-        "enhanced_cps_child_share": 0.12
+        "label": "Q2 / married",
+        "raw_cps_poverty_rate": 0.21025930083410171,
+        "enhanced_cps_poverty_rate": 0.397102703513249,
+        "raw_cps_child_share": 0.12258153757904686,
+        "enhanced_cps_child_share": 0.09690879186669737
       },
       {
-        "label": "Q3, single parent",
-        "raw_cps_poverty_rate": 0.06,
-        "enhanced_cps_poverty_rate": 0.08,
-        "raw_cps_child_share": 0.09,
-        "enhanced_cps_child_share": 0.09
+        "label": "Q3 / single parent",
+        "raw_cps_poverty_rate": 0.023385300780333015,
+        "enhanced_cps_poverty_rate": 0.09320921215130783,
+        "raw_cps_child_share": 0.062050858223079944,
+        "enhanced_cps_child_share": 0.10068454384054487
       },
       {
-        "label": "Q3, married",
-        "raw_cps_poverty_rate": 0.03,
-        "enhanced_cps_poverty_rate": 0.04,
-        "raw_cps_child_share": 0.16,
-        "enhanced_cps_child_share": 0.15
+        "label": "Q3 / married",
+        "raw_cps_poverty_rate": 0.017775752097583877,
+        "enhanced_cps_poverty_rate": 0.1290992767429825,
+        "raw_cps_child_share": 0.15160310114514897,
+        "enhanced_cps_child_share": 0.13777806318100813
       },
       {
-        "label": "Q4, single parent",
-        "raw_cps_poverty_rate": 0.02,
-        "enhanced_cps_poverty_rate": 0.03,
-        "raw_cps_child_share": 0.06,
-        "enhanced_cps_child_share": 0.05
+        "label": "Q4 / single parent",
+        "raw_cps_poverty_rate": 0.05236486487305932,
+        "enhanced_cps_poverty_rate": 0.025198826822540325,
+        "raw_cps_child_share": 0.040906577233110156,
+        "enhanced_cps_child_share": 0.0483699756609119
       },
       {
-        "label": "Q4, married",
-        "raw_cps_poverty_rate": 0.01,
-        "enhanced_cps_poverty_rate": 0.01,
-        "raw_cps_child_share": 0.18,
-        "enhanced_cps_child_share": 0.17
+        "label": "Q4 / married",
+        "raw_cps_poverty_rate": 0.0026676829331899812,
+        "enhanced_cps_poverty_rate": 0.12233962234778019,
+        "raw_cps_child_share": 0.18131564982733356,
+        "enhanced_cps_child_share": 0.14565985537416457
       },
       {
-        "label": "Q5, single parent",
-        "raw_cps_poverty_rate": 0.01,
-        "enhanced_cps_poverty_rate": 0.01,
-        "raw_cps_child_share": 0.04,
-        "enhanced_cps_child_share": 0.04
+        "label": "Q5 / single parent",
+        "raw_cps_poverty_rate": 0.0,
+        "enhanced_cps_poverty_rate": 0.0025702009894287173,
+        "raw_cps_child_share": 0.016238253644922537,
+        "enhanced_cps_child_share": 0.038695502579250175
       },
       {
-        "label": "Q5, married",
-        "raw_cps_poverty_rate": 0.00,
-        "enhanced_cps_poverty_rate": 0.01,
-        "raw_cps_child_share": 0.12,
-        "enhanced_cps_child_share": 0.10
+        "label": "Q5 / married",
+        "raw_cps_poverty_rate": 0.0,
+        "enhanced_cps_poverty_rate": 0.06151588203035235,
+        "raw_cps_child_share": 0.19603372279081002,
+        "enhanced_cps_child_share": 0.1732199316671996
       }
     ]
   },
   "tax_gap_by_decile": [
-    {"decile": 1, "mean_income": -12371, "pe_federal_tax": -269, "reported_federal_tax": 1724, "gap": -1993},
-    {"decile": 2, "mean_income": 15336, "pe_federal_tax": -5845, "reported_federal_tax": -6429, "gap": 584},
-    {"decile": 3, "mean_income": 33214, "pe_federal_tax": -5098, "reported_federal_tax": -5304, "gap": 207},
-    {"decile": 4, "mean_income": 50749, "pe_federal_tax": -2611, "reported_federal_tax": -3208, "gap": 597},
-    {"decile": 5, "mean_income": 64501, "pe_federal_tax": -1974, "reported_federal_tax": 538, "gap": -2512},
-    {"decile": 6, "mean_income": 85151, "pe_federal_tax": 1794, "reported_federal_tax": 2235, "gap": -441},
-    {"decile": 7, "mean_income": 109151, "pe_federal_tax": 9036, "reported_federal_tax": 10799, "gap": -1763},
-    {"decile": 8, "mean_income": 143938, "pe_federal_tax": 14118, "reported_federal_tax": 14244, "gap": -127},
-    {"decile": 9, "mean_income": 197449, "pe_federal_tax": 25051, "reported_federal_tax": 24656, "gap": 396},
-    {"decile": 10, "mean_income": 722831, "pe_federal_tax": 184718, "reported_federal_tax": 79608, "gap": 105110}
+    {
+      "decile": 1,
+      "mean_income": 8796.77,
+      "pe_federal_tax": -163.34,
+      "reported_federal_tax": -671.95,
+      "gap": 508.61
+    },
+    {
+      "decile": 2,
+      "mean_income": 24844.49,
+      "pe_federal_tax": 982.18,
+      "reported_federal_tax": -1037.86,
+      "gap": 2020.03
+    },
+    {
+      "decile": 3,
+      "mean_income": 36932.27,
+      "pe_federal_tax": 4026.41,
+      "reported_federal_tax": -493.48,
+      "gap": 4519.89
+    },
+    {
+      "decile": 4,
+      "mean_income": 49400.42,
+      "pe_federal_tax": 1983.93,
+      "reported_federal_tax": 858.36,
+      "gap": 1125.57
+    },
+    {
+      "decile": 5,
+      "mean_income": 63154.37,
+      "pe_federal_tax": 3959.8,
+      "reported_federal_tax": 1814.69,
+      "gap": 2145.11
+    },
+    {
+      "decile": 6,
+      "mean_income": 79668.35,
+      "pe_federal_tax": 5319.9,
+      "reported_federal_tax": 4351.82,
+      "gap": 968.08
+    },
+    {
+      "decile": 7,
+      "mean_income": 99348.32,
+      "pe_federal_tax": 10131.48,
+      "reported_federal_tax": 7717.89,
+      "gap": 2413.58
+    },
+    {
+      "decile": 8,
+      "mean_income": 127433.32,
+      "pe_federal_tax": 10861.56,
+      "reported_federal_tax": 10090.54,
+      "gap": 771.02
+    },
+    {
+      "decile": 9,
+      "mean_income": 171085.29,
+      "pe_federal_tax": 23286.46,
+      "reported_federal_tax": 20322.85,
+      "gap": 2963.61
+    },
+    {
+      "decile": 10,
+      "mean_income": 388846.45,
+      "pe_federal_tax": 76628.71,
+      "reported_federal_tax": 78358.55,
+      "gap": -1729.84
+    }
   ],
-  "state_results": [
-    {"state": "CA", "reported_child_poverty": 0.15, "computed_child_poverty": 0.24, "total_children": 8500000},
-    {"state": "TX", "reported_child_poverty": 0.16, "computed_child_poverty": 0.25, "total_children": 7200000},
-    {"state": "NY", "reported_child_poverty": 0.14, "computed_child_poverty": 0.22, "total_children": 4100000},
-    {"state": "FL", "reported_child_poverty": 0.13, "computed_child_poverty": 0.21, "total_children": 4300000}
-  ],
+  "state_results": [],
   "metadata": {
-    "generated_at": "2026-01-31T00:00:00Z",
+    "generated_at": "2026-02-01T03:44:25Z",
     "policyengine_us_version": "1.534.5",
     "raw_cps_dataset": "hf://policyengine/policyengine-us-data/cps_2023.h5",
     "enhanced_cps_dataset": "hf://policyengine/policyengine-us-data/enhanced_cps_2024.h5",
-    "total_runtime_seconds": 0
+    "total_runtime_seconds": 35.0
   }
 }
