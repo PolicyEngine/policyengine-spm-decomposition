@@ -21,6 +21,8 @@ from spm_decomposition.poverty import compute_child_poverty_rate
 from spm_decomposition.weights import compute_weight_rebalancing
 from spm_decomposition.tax_gap import compute_tax_gap
 from spm_decomposition.states import compute_state_results
+from spm_decomposition.programs import compute_program_effects
+from spm_decomposition.demographics import compute_demographic_breakdowns
 
 
 def main():
@@ -43,7 +45,20 @@ def main():
     raw_poverty = compute_child_poverty_rate(raw_sim, period=YEAR)
     enhanced_poverty = compute_child_poverty_rate(enhanced_sim, period=YEAR)
     print(f"  Raw CPS:      computed={raw_poverty['computed']:.4f}  reported={raw_poverty['reported']:.4f}")
-    print(f"  Enhanced CPS: computed={enhanced_poverty['computed']:.4f}  reported={enhanced_poverty['reported']:.4f}")
+    print(f"  Enhanced CPS: computed={enhanced_poverty['computed']:.4f}")
+
+    # ── Program effects ──────────────────────────────────────────────
+    print("Computing program effects on poverty (enhanced CPS)...")
+    t0 = time.time()
+    program_effects = compute_program_effects(enhanced_sim, period=YEAR)
+    print(f"  {len(program_effects)} programs in {time.time() - t0:.1f}s")
+    for p in program_effects:
+        print(f"    {p['label']:30s}  lifts {p['children_lifted']/1e6:.2f}M children")
+
+    # ── Demographic breakdowns ────────────────────────────────────────
+    print("Computing demographic breakdowns (enhanced CPS)...")
+    demographics = compute_demographic_breakdowns(enhanced_sim, period=YEAR)
+    print(f"  {len(demographics['by_age'])} age groups, {len(demographics['by_race'])} race groups")
 
     # ── Weight rebalancing ────────────────────────────────────────────
     print("Computing weight rebalancing...")
@@ -61,7 +76,7 @@ def main():
         print("Skipping state-level analysis (--skip-states)")
         state_results = []
     else:
-        print("Computing state-level results (this takes ~13 min)...")
+        print("Computing state-level results (this takes ~5 min)...")
         t0 = time.time()
         state_results = compute_state_results(period=YEAR)
         print(f"  {len(state_results)} states in {time.time() - t0:.1f}s")
@@ -71,12 +86,12 @@ def main():
     # ── Build app JSON ────────────────────────────────────────────────
     census = CENSUS_PUBLISHED_CHILD_POVERTY_2024
 
-    # Waterfall steps (matching app schema)
+    # Waterfall: 3 clean steps (removed "Enhanced CPS reported" which is
+    # meaningless since enhanced CPS has PUF-imputed income fields)
     steps = [
         {"label": "Census published (2024)", "value": round(census, 4)},
         {"label": "Raw CPS reported (2024)", "value": round(raw_poverty["reported"], 4)},
         {"label": "Raw CPS PE-computed (2024)", "value": round(raw_poverty["computed"], 4)},
-        {"label": "Enhanced CPS reported (2024)", "value": round(enhanced_poverty["reported"], 4)},
         {"label": "Enhanced CPS PE-computed (2024)", "value": round(enhanced_poverty["computed"], 4)},
     ]
 
@@ -91,19 +106,13 @@ def main():
             "from": steps[1]["label"],
             "to": steps[2]["label"],
             "delta": round(steps[2]["value"] - steps[1]["value"], 4),
-            "explanation": "PE tax/benefit modeling on raw CPS data",
+            "explanation": "PE tax/benefit modeling on raw CPS data (replaces CPS-reported taxes/benefits with PE-computed values)",
         },
         {
             "from": steps[2]["label"],
             "to": steps[3]["label"],
             "delta": round(steps[3]["value"] - steps[2]["value"], 4),
-            "explanation": "Enhanced CPS weight recalibration to IRS SOI targets + PUF income imputation",
-        },
-        {
-            "from": steps[3]["label"],
-            "to": steps[4]["label"],
-            "delta": round(steps[4]["value"] - steps[3]["value"], 4),
-            "explanation": "PE tax/benefit modeling on enhanced CPS (PUF-imputed income taxed higher)",
+            "explanation": "Enhanced CPS weight recalibration to IRS SOI targets + PUF income imputation shifts population toward lower-income households",
         },
     ]
 
@@ -111,6 +120,20 @@ def main():
 
     output = {
         "waterfall": {"steps": steps, "deltas": deltas},
+        "program_effects": [
+            {
+                "program": p["program"],
+                "label": p["label"],
+                "children_lifted": round(p["children_lifted"]),
+                "total_lifted": round(p["total_lifted"]),
+                "rate_with": round(p["rate_with"], 4),
+                "rate_without": round(p["rate_without"], 4),
+                "total_benefit_B": round(p["total_benefit_B"], 1),
+                "census_children_lifted_M": p.get("census_children_lifted_M"),
+            }
+            for p in program_effects
+        ],
+        "demographics": demographics,
         "weight_rebalancing": weight_rebalancing,
         "tax_gap_by_decile": [
             {k: round(v, 2) if isinstance(v, float) else v for k, v in d.items()}

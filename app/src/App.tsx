@@ -10,6 +10,8 @@ import {
 import { useDecompositionData } from "./hooks/useDecompositionData";
 import { HeroSection } from "./components/HeroSection";
 import { WaterfallChart } from "./components/WaterfallChart";
+import { ProgramEffectsChart } from "./components/ProgramEffectsChart";
+import { DemographicChart } from "./components/DemographicChart";
 import { WeightRebalancingChart } from "./components/WeightRebalancingChart";
 import { TaxGapChart } from "./components/TaxGapChart";
 import { StatePovertyChart } from "./components/StatePovertyChart";
@@ -62,6 +64,20 @@ export default function App() {
           <WaterfallChart waterfall={data.waterfall} />
 
           <Divider />
+
+          {data.program_effects && data.program_effects.length > 0 && (
+            <>
+              <ProgramEffectsChart programs={data.program_effects} />
+              <Divider />
+            </>
+          )}
+
+          {data.demographics && (
+            <>
+              <DemographicChart demographics={data.demographics} />
+              <Divider />
+            </>
+          )}
 
           <SummaryTable waterfall={data.waterfall} />
 

@@ -10,11 +10,34 @@ export interface WaterfallDelta {
   explanation: string;
 }
 
+export interface ProgramEffect {
+  program: string;
+  label: string;
+  children_lifted: number;
+  total_lifted: number;
+  rate_with: number; // child poverty rate with program
+  rate_without: number; // child poverty rate without program
+  total_benefit_B: number; // total benefit in billions USD
+  census_children_lifted_M: number | null; // Census benchmark, null if unavailable
+}
+
+export interface DemographicGroup {
+  group: string;
+  pe_rate: number;
+  census_rate: number | null;
+  total_children: number;
+}
+
+export interface Demographics {
+  by_age: DemographicGroup[];
+  by_race: DemographicGroup[];
+}
+
 export interface WeightRebalancingGroup {
-  label: string; // e.g. "Low-income, 2+ children"
+  label: string;
   raw_cps_poverty_rate: number;
   enhanced_cps_poverty_rate: number;
-  raw_cps_child_share: number; // share of total children
+  raw_cps_child_share: number;
   enhanced_cps_child_share: number;
 }
 
@@ -46,6 +69,8 @@ export interface DecompositionData {
     steps: WaterfallStep[];
     deltas: WaterfallDelta[];
   };
+  program_effects: ProgramEffect[];
+  demographics: Demographics;
   weight_rebalancing: {
     groups: WeightRebalancingGroup[];
   };
