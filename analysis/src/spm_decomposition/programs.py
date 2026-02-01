@@ -12,30 +12,13 @@ import numpy as np
 from .poverty import _map_spm_to_person
 
 
-def _aggregate_person_to_spm(sim, person_vals, period):
-    """Sum person-level values to SPM-unit level."""
-    spm_unit_id = sim.calc("spm_unit_id", period=period).values
-    person_spm_unit_id = sim.calc("person_spm_unit_id", period=period).values
-    spm_id_to_idx = {int(sid): i for i, sid in enumerate(spm_unit_id)}
-    spm_agg = np.zeros(len(spm_unit_id))
-    for i, pid in enumerate(person_spm_unit_id):
-        idx = spm_id_to_idx[int(pid)]
-        spm_agg[idx] += person_vals[i]
-    return spm_agg
+def _calc_as_spm(sim, var_name, period):
+    """Compute a variable mapped to SPM-unit level.
 
-
-def _sum_tax_units_to_spm(sim, tu_var_name, period):
-    """Sum a tax-unit-level variable to SPM-unit level."""
-    tu_vals = sim.calc(tu_var_name, period=period).values
-    tu_id = sim.calc("tax_unit_id", period=period).values
-    person_tu_id = sim.calc("person_tax_unit_id", period=period).values
-    tu_id_to_idx = {int(tid): i for i, tid in enumerate(tu_id)}
-
-    # Map TU values to persons, then aggregate to SPM units
-    tu_person = np.array(
-        [tu_vals[tu_id_to_idx[int(ptid)]] for ptid in person_tu_id]
-    )
-    return _aggregate_person_to_spm(sim, tu_person, period)
+    Uses sim.calc(map_to="spm_unit") which correctly sums tax-unit or
+    person-level variables to SPM-unit level without double-counting.
+    """
+    return sim.calc(var_name, period=period, map_to="spm_unit").values
 
 
 def _program_effect(
@@ -110,61 +93,51 @@ def compute_program_effects(sim, period=2024) -> list[dict]:
     results = []
 
     # SNAP — SPM-unit level, PE annualizes monthly vars when period=YEAR
-    snap_spm = sim.calc("snap", period=period).values
-    r = effect(snap_spm)
+    r = effect(_calc_as_spm(sim, "snap", period))
     r.update(program="snap", label="SNAP", census_children_lifted_M=1.4)
     results.append(r)
 
-    # Social Security — person-level, aggregate to SPM
-    ss_person = sim.calc("social_security", period=period).values
-    ss_spm = _aggregate_person_to_spm(sim, ss_person, period)
-    r = effect(ss_spm)
+    # Social Security — person-level, map_to sums to SPM
+    r = effect(_calc_as_spm(sim, "social_security", period))
     r.update(program="social_security", label="Social Security",
              census_children_lifted_M=None)
     results.append(r)
 
     # SSI — person-level
-    ssi_person = sim.calc("ssi", period=period).values
-    ssi_spm = _aggregate_person_to_spm(sim, ssi_person, period)
-    r = effect(ssi_spm)
+    r = effect(_calc_as_spm(sim, "ssi", period))
     r.update(program="ssi", label="SSI", census_children_lifted_M=0.5)
     results.append(r)
 
     # Housing subsidies — SPM-unit level (reported/disabled)
-    housing_spm = sim.calc(
-        "spm_unit_capped_housing_subsidy", period=period
-    ).values
-    r = effect(housing_spm)
+    r = effect(_calc_as_spm(sim, "spm_unit_capped_housing_subsidy", period))
     r.update(program="housing", label="Housing subsidies",
              census_children_lifted_M=None)
     results.append(r)
 
     # School meals — SPM-unit level (PE-computed)
-    free_meals = sim.calc("free_school_meals", period=period).values
-    reduced_meals = sim.calc("reduced_price_school_meals", period=period).values
-    meals_spm = free_meals + reduced_meals
-    r = effect(meals_spm)
+    free_meals = _calc_as_spm(sim, "free_school_meals", period)
+    reduced_meals = _calc_as_spm(sim, "reduced_price_school_meals", period)
+    r = effect(free_meals + reduced_meals)
     r.update(program="school_meals", label="School meals",
              census_children_lifted_M=None)
     results.append(r)
 
-    # EITC — tax-unit level, aggregated to SPM
-    eitc_spm = _sum_tax_units_to_spm(sim, "eitc", period)
+    # EITC — tax-unit level, map_to sums to SPM correctly
+    eitc_spm = _calc_as_spm(sim, "eitc", period)
     r = effect(eitc_spm)
     r.update(program="eitc", label="EITC", census_children_lifted_M=None)
     results.append(r)
 
     # Refundable CTC — tax-unit level
     try:
-        rctc_spm = _sum_tax_units_to_spm(sim, "refundable_ctc", period)
+        rctc_spm = _calc_as_spm(sim, "refundable_ctc", period)
         r = effect(rctc_spm)
         r.update(program="refundable_ctc", label="Refundable CTC",
                  census_children_lifted_M=None)
         results.append(r)
 
         # Combined refundable credits
-        combined_spm = eitc_spm + rctc_spm
-        r = effect(combined_spm)
+        r = effect(eitc_spm + rctc_spm)
         r.update(program="refundable_credits", label="EITC + refundable CTC",
                  census_children_lifted_M=3.7)
         results.append(r)

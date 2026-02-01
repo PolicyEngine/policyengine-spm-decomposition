@@ -57,15 +57,28 @@ def aggregate_person_to_spm(person_vals):
 
 
 def sum_tax_units_to_spm(tu_var_name):
-    """Sum a tax-unit variable to SPM-unit level (return SPM-unit array)."""
+    """Sum a tax-unit variable to SPM-unit level (return SPM-unit array).
+
+    Maps each TU directly to its containing SPM unit to avoid double-counting
+    that occurs when mapping TU values to all persons then aggregating.
+    """
     tu_vals = sim.calc(tu_var_name, period=period).values
     tu_id = sim.calc("tax_unit_id", period=period).values
     person_tu_id = sim.calc("person_tax_unit_id", period=period).values
-    tu_id_to_idx_local = {int(tid): i for i, tid in enumerate(tu_id)}
 
-    # Map TU values to persons, then aggregate persons to SPM units
-    tu_person = np.array([tu_vals[tu_id_to_idx_local[int(ptid)]] for ptid in person_tu_id])
-    return aggregate_person_to_spm(tu_person)
+    # Build TU → SPM mapping (first person encountered determines it)
+    tu_to_spm_idx = {}
+    for i, ptid in enumerate(person_tu_id):
+        tid = int(ptid)
+        if tid not in tu_to_spm_idx:
+            tu_to_spm_idx[tid] = spm_id_to_idx[int(person_spm_unit_id[i])]
+
+    spm_agg = np.zeros(len(spm_unit_id))
+    for i, tid in enumerate(tu_id):
+        spm_idx = tu_to_spm_idx.get(int(tid))
+        if spm_idx is not None:
+            spm_agg[spm_idx] += tu_vals[i]
+    return spm_agg
 
 
 def weighted_total_spm(spm_vals):
