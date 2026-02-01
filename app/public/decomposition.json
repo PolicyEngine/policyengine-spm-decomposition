@@ -195,12 +195,319 @@
       "gap": -1729.84
     }
   ],
-  "state_results": [],
+  "state_results": [
+    {
+      "state": "AL",
+      "reported_child_poverty": 0.094,
+      "computed_child_poverty": 0.1968,
+      "total_children": 1183138
+    },
+    {
+      "state": "AK",
+      "reported_child_poverty": 0.1588,
+      "computed_child_poverty": 0.2168,
+      "total_children": 172216
+    },
+    {
+      "state": "AZ",
+      "reported_child_poverty": 0.1606,
+      "computed_child_poverty": 0.2568,
+      "total_children": 1658457
+    },
+    {
+      "state": "AR",
+      "reported_child_poverty": 0.0911,
+      "computed_child_poverty": 0.1848,
+      "total_children": 720196
+    },
+    {
+      "state": "CA",
+      "reported_child_poverty": 0.2184,
+      "computed_child_poverty": 0.3019,
+      "total_children": 8842226
+    },
+    {
+      "state": "CO",
+      "reported_child_poverty": 0.1557,
+      "computed_child_poverty": 0.1611,
+      "total_children": 1269297
+    },
+    {
+      "state": "CT",
+      "reported_child_poverty": 0.1378,
+      "computed_child_poverty": 0.2123,
+      "total_children": 764161
+    },
+    {
+      "state": "DC",
+      "reported_child_poverty": 0.1581,
+      "computed_child_poverty": 0.2209,
+      "total_children": 137072
+    },
+    {
+      "state": "DE",
+      "reported_child_poverty": 0.1561,
+      "computed_child_poverty": 0.2153,
+      "total_children": 222017
+    },
+    {
+      "state": "FL",
+      "reported_child_poverty": 0.1592,
+      "computed_child_poverty": 0.3253,
+      "total_children": 4692510
+    },
+    {
+      "state": "GA",
+      "reported_child_poverty": 0.1378,
+      "computed_child_poverty": 0.2569,
+      "total_children": 2625110
+    },
+    {
+      "state": "HI",
+      "reported_child_poverty": 0.2468,
+      "computed_child_poverty": 0.2329,
+      "total_children": 304084
+    },
+    {
+      "state": "IA",
+      "reported_child_poverty": 0.0754,
+      "computed_child_poverty": 0.1516,
+      "total_children": 755610
+    },
+    {
+      "state": "ID",
+      "reported_child_poverty": 0.0915,
+      "computed_child_poverty": 0.1432,
+      "total_children": 480510
+    },
+    {
+      "state": "IL",
+      "reported_child_poverty": 0.112,
+      "computed_child_poverty": 0.2266,
+      "total_children": 2851767
+    },
+    {
+      "state": "IN",
+      "reported_child_poverty": 0.1095,
+      "computed_child_poverty": 0.1946,
+      "total_children": 1648116
+    },
+    {
+      "state": "KS",
+      "reported_child_poverty": 0.0819,
+      "computed_child_poverty": 0.1484,
+      "total_children": 709474
+    },
+    {
+      "state": "KY",
+      "reported_child_poverty": 0.1003,
+      "computed_child_poverty": 0.1934,
+      "total_children": 1048147
+    },
+    {
+      "state": "LA",
+      "reported_child_poverty": 0.1222,
+      "computed_child_poverty": 0.2502,
+      "total_children": 1115613
+    },
+    {
+      "state": "MA",
+      "reported_child_poverty": 0.1631,
+      "computed_child_poverty": 0.2365,
+      "total_children": 1433703
+    },
+    {
+      "state": "MD",
+      "reported_child_poverty": 0.1822,
+      "computed_child_poverty": 0.2501,
+      "total_children": 1419337
+    },
+    {
+      "state": "ME",
+      "reported_child_poverty": 0.1092,
+      "computed_child_poverty": 0.1944,
+      "total_children": 259213
+    },
+    {
+      "state": "MI",
+      "reported_child_poverty": 0.1166,
+      "computed_child_poverty": 0.2189,
+      "total_children": 2214934
+    },
+    {
+      "state": "MN",
+      "reported_child_poverty": 0.1152,
+      "computed_child_poverty": 0.1563,
+      "total_children": 1355798
+    },
+    {
+      "state": "MO",
+      "reported_child_poverty": 0.0953,
+      "computed_child_poverty": 0.1897,
+      "total_children": 1427870
+    },
+    {
+      "state": "MS",
+      "reported_child_poverty": 0.0878,
+      "computed_child_poverty": 0.2057,
+      "total_children": 707224
+    },
+    {
+      "state": "MT",
+      "reported_child_poverty": 0.1011,
+      "computed_child_poverty": 0.1771,
+      "total_children": 243123
+    },
+    {
+      "state": "NC",
+      "reported_child_poverty": 0.1236,
+      "computed_child_poverty": 0.2271,
+      "total_children": 2441676
+    },
+    {
+      "state": "ND",
+      "reported_child_poverty": 0.0603,
+      "computed_child_poverty": 0.1426,
+      "total_children": 189754
+    },
+    {
+      "state": "NE",
+      "reported_child_poverty": 0.0809,
+      "computed_child_poverty": 0.1662,
+      "total_children": 498073
+    },
+    {
+      "state": "NH",
+      "reported_child_poverty": 0.1091,
+      "computed_child_poverty": 0.1757,
+      "total_children": 268267
+    },
+    {
+      "state": "NJ",
+      "reported_child_poverty": 0.1531,
+      "computed_child_poverty": 0.2098,
+      "total_children": 2093560
+    },
+    {
+      "state": "NM",
+      "reported_child_poverty": 0.1227,
+      "computed_child_poverty": 0.2528,
+      "total_children": 471220
+    },
+    {
+      "state": "NV",
+      "reported_child_poverty": 0.1565,
+      "computed_child_poverty": 0.2842,
+      "total_children": 715604
+    },
+    {
+      "state": "NY",
+      "reported_child_poverty": 0.1906,
+      "computed_child_poverty": 0.2895,
+      "total_children": 4157080
+    },
+    {
+      "state": "OH",
+      "reported_child_poverty": 0.1001,
+      "computed_child_poverty": 0.2004,
+      "total_children": 2689022
+    },
+    {
+      "state": "OK",
+      "reported_child_poverty": 0.1131,
+      "computed_child_poverty": 0.2209,
+      "total_children": 1007241
+    },
+    {
+      "state": "OR",
+      "reported_child_poverty": 0.1529,
+      "computed_child_poverty": 0.2513,
+      "total_children": 865511
+    },
+    {
+      "state": "PA",
+      "reported_child_poverty": 0.1175,
+      "computed_child_poverty": 0.2238,
+      "total_children": 2797018
+    },
+    {
+      "state": "RI",
+      "reported_child_poverty": 0.134,
+      "computed_child_poverty": 0.2282,
+      "total_children": 218576
+    },
+    {
+      "state": "SC",
+      "reported_child_poverty": 0.1174,
+      "computed_child_poverty": 0.2059,
+      "total_children": 1192070
+    },
+    {
+      "state": "SD",
+      "reported_child_poverty": 0.0722,
+      "computed_child_poverty": 0.1986,
+      "total_children": 217386
+    },
+    {
+      "state": "TN",
+      "reported_child_poverty": 0.1204,
+      "computed_child_poverty": 0.2343,
+      "total_children": 1635340
+    },
+    {
+      "state": "TX",
+      "reported_child_poverty": 0.163,
+      "computed_child_poverty": 0.2883,
+      "total_children": 7797132
+    },
+    {
+      "state": "UT",
+      "reported_child_poverty": 0.1159,
+      "computed_child_poverty": 0.1372,
+      "total_children": 946492
+    },
+    {
+      "state": "VA",
+      "reported_child_poverty": 0.1448,
+      "computed_child_poverty": 0.2147,
+      "total_children": 1971146
+    },
+    {
+      "state": "VT",
+      "reported_child_poverty": 0.1358,
+      "computed_child_poverty": 0.2105,
+      "total_children": 123461
+    },
+    {
+      "state": "WA",
+      "reported_child_poverty": 0.1704,
+      "computed_child_poverty": 0.2515,
+      "total_children": 1731728
+    },
+    {
+      "state": "WI",
+      "reported_child_poverty": 0.0908,
+      "computed_child_poverty": 0.1727,
+      "total_children": 1295616
+    },
+    {
+      "state": "WV",
+      "reported_child_poverty": 0.1055,
+      "computed_child_poverty": 0.2146,
+      "total_children": 372922
+    },
+    {
+      "state": "WY",
+      "reported_child_poverty": 0.0508,
+      "computed_child_poverty": 0.1335,
+      "total_children": 135056
+    }
+  ],
   "metadata": {
-    "generated_at": "2026-02-01T03:44:25Z",
+    "generated_at": "2026-02-01T03:50:58Z",
     "policyengine_us_version": "1.534.5",
     "raw_cps_dataset": "hf://policyengine/policyengine-us-data/cps_2023.h5",
     "enhanced_cps_dataset": "hf://policyengine/policyengine-us-data/enhanced_cps_2024.h5",
-    "total_runtime_seconds": 35.0
+    "total_runtime_seconds": 370.1
   }
 }
