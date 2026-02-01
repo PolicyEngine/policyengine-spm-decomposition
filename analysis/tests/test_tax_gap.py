@@ -12,26 +12,30 @@ from spm_decomposition.tax_gap import compute_tax_gap
 # ---------------------------------------------------------------------------
 
 def _make_tax_sim(
-    adjusted_gross_income,
-    income_tax,
-    income_tax_reported,
+    spm_unit_total_income_reported,
+    spm_unit_federal_tax,
+    spm_unit_federal_tax_reported,
     weights=None,
 ):
     """Build a MockMicrosimulation for tax gap tests.
 
-    All variables are at the tax-unit level.
+    All variables are at the SPM-unit level. The production code accesses
+    the ``.weights`` property on the MicroSeries returned by
+    ``sim.calc("spm_unit_total_income_reported", ...)``.
     """
-    n = len(adjusted_gross_income)
+    n = len(spm_unit_total_income_reported)
     if weights is None:
         weights = np.ones(n)
     return MockMicrosimulation(
         {
-            "adjusted_gross_income": MockMicroSeries(
-                adjusted_gross_income, weights
+            "spm_unit_total_income_reported": MockMicroSeries(
+                spm_unit_total_income_reported, weights
             ),
-            "income_tax": MockMicroSeries(income_tax, weights),
-            "income_tax_reported": MockMicroSeries(
-                income_tax_reported, weights
+            "spm_unit_federal_tax": MockMicroSeries(
+                spm_unit_federal_tax, weights
+            ),
+            "spm_unit_federal_tax_reported": MockMicroSeries(
+                spm_unit_federal_tax_reported, weights
             ),
         }
     )

@@ -15,6 +15,10 @@ class MockMicroSeries:
             else np.ones_like(self.values)
         )
 
+    @property
+    def weights(self):
+        return self._weights
+
     def sum(self):
         return float(np.sum(self.values * self._weights))
 

@@ -2,8 +2,12 @@
 
 YEAR = 2024
 
-# Dataset paths on HuggingFace
-RAW_CPS_DATASET = "hf://policyengine/policyengine-us-data/cps_2023.h5"
+# Dataset paths
+# cps_2024.h5 is from the 2024 ASEC (March 2025 survey release).
+# PR #502 merged to add it to HuggingFace uploads; using local path until
+# the next dataset build publishes it. Then switch to:
+# "hf://policyengine/policyengine-us-data/cps_2024.h5"
+RAW_CPS_DATASET = "/Users/maxghenis/policyengine-us-data/policyengine_us_data/storage/cps_2024.h5"
 ENHANCED_CPS_DATASET = "hf://policyengine/policyengine-us-data/enhanced_cps_2024.h5"
 
 # Census published SPM child poverty rate for 2024

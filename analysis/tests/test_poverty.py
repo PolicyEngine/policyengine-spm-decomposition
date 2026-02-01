@@ -18,14 +18,25 @@ def _make_sim(
     spm_threshold,
     weights=None,
 ):
-    """Build a MockMicrosimulation with the variables needed by poverty.py."""
+    """Build a MockMicrosimulation with the variables needed by poverty.py.
+
+    Uses a 1-to-1 person-to-SPM-unit mapping so that SPM-unit-level values
+    map directly back to the same person index.
+    """
     n = len(is_child)
     if weights is None:
         weights = np.ones(n)
+    # 1-to-1 mapping: each person is their own SPM unit
+    spm_ids = np.arange(n, dtype=float)
     return MockMicrosimulation(
         {
+            # Person-level variables
             "is_child": MockMicroSeries(is_child, weights),
             "person_in_poverty": MockMicroSeries(person_in_poverty, weights),
+            "person_weight": MockMicroSeries(weights, weights),
+            "person_spm_unit_id": MockMicroSeries(spm_ids, weights),
+            # SPM-unit-level variables (1-to-1 with persons)
+            "spm_unit_id": MockMicroSeries(spm_ids, weights),
             "spm_unit_net_income_reported": MockMicroSeries(
                 net_income_reported, weights
             ),

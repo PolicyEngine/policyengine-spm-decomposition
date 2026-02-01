@@ -21,7 +21,9 @@ def _full_mock_sim(
     """Build a MockMicrosimulation with every variable the orchestrator needs.
 
     This creates a synthetic dataset of ``n`` persons (half children, half
-    adults) with controllable poverty and tax rates.
+    adults) with controllable poverty and tax rates.  Uses 1-to-1 entity
+    mappings (each person is their own SPM unit and tax unit) so that
+    entity-level values map directly back to the same person index.
     """
     rng = np.random.RandomState(seed)
 
@@ -38,23 +40,38 @@ def _full_mock_sim(
     poor_idx = rng.choice(n, size=n_poor, replace=False)
     person_in_poverty[poor_idx] = 1.0
 
-    # Tax variables (tax-unit level, but mock treats everything as person-level)
-    agi = income.copy()
-    income_tax = agi * tax_rate
-    income_tax_reported = agi * tax_reported_rate
+    # Tax variables (SPM-unit level in production code)
+    spm_total_income = income.copy()
+    federal_tax = spm_total_income * tax_rate
+    federal_tax_reported = spm_total_income * tax_reported_rate
 
     # Family structure
     tax_unit_is_joint = rng.choice([0.0, 1.0], n)
 
+    # 1-to-1 entity mappings
+    entity_ids = np.arange(n, dtype=float)
+
     return MockMicrosimulation(
         {
+            # Person-level variables
             "is_child": MockMicroSeries(is_child, weights),
             "person_in_poverty": MockMicroSeries(person_in_poverty, weights),
+            "person_weight": MockMicroSeries(weights, weights),
+            "person_spm_unit_id": MockMicroSeries(entity_ids, weights),
+            "person_tax_unit_id": MockMicroSeries(entity_ids, weights),
+            # SPM-unit-level variables (1-to-1 with persons)
+            "spm_unit_id": MockMicroSeries(entity_ids, weights),
             "spm_unit_net_income_reported": MockMicroSeries(income, weights),
             "spm_unit_spm_threshold": MockMicroSeries(spm_threshold, weights),
-            "adjusted_gross_income": MockMicroSeries(agi, weights),
-            "income_tax": MockMicroSeries(income_tax, weights),
-            "income_tax_reported": MockMicroSeries(income_tax_reported, weights),
+            "spm_unit_total_income_reported": MockMicroSeries(
+                spm_total_income, weights
+            ),
+            "spm_unit_federal_tax": MockMicroSeries(federal_tax, weights),
+            "spm_unit_federal_tax_reported": MockMicroSeries(
+                federal_tax_reported, weights
+            ),
+            # Tax-unit-level variables (1-to-1 with persons)
+            "tax_unit_id": MockMicroSeries(entity_ids, weights),
             "tax_unit_is_joint": MockMicroSeries(tax_unit_is_joint, weights),
         }
     )

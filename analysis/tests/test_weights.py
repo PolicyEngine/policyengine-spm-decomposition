@@ -19,18 +19,32 @@ def _make_weight_sim(
     tax_unit_is_joint,
     weights=None,
 ):
-    """Build a MockMicrosimulation for weight rebalancing tests."""
+    """Build a MockMicrosimulation for weight rebalancing tests.
+
+    Uses 1-to-1 person-to-SPM-unit and person-to-tax-unit mappings so that
+    entity-level values map directly back to the same person index.
+    """
     n = len(is_child)
     if weights is None:
         weights = np.ones(n)
+    # 1-to-1 mappings: each person is their own SPM unit and tax unit
+    entity_ids = np.arange(n, dtype=float)
     return MockMicrosimulation(
         {
+            # Person-level variables
             "is_child": MockMicroSeries(is_child, weights),
             "person_in_poverty": MockMicroSeries(person_in_poverty, weights),
+            "person_weight": MockMicroSeries(weights, weights),
+            "person_spm_unit_id": MockMicroSeries(entity_ids, weights),
+            "person_tax_unit_id": MockMicroSeries(entity_ids, weights),
+            # SPM-unit-level variables (1-to-1 with persons)
+            "spm_unit_id": MockMicroSeries(entity_ids, weights),
             "spm_unit_net_income_reported": MockMicroSeries(
                 net_income_reported, weights
             ),
             "spm_unit_spm_threshold": MockMicroSeries(spm_threshold, weights),
+            # Tax-unit-level variables (1-to-1 with persons)
+            "tax_unit_id": MockMicroSeries(entity_ids, weights),
             "tax_unit_is_joint": MockMicroSeries(tax_unit_is_joint, weights),
         }
     )

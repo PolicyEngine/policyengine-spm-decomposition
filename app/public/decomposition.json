@@ -7,11 +7,11 @@
       },
       {
         "label": "Raw CPS reported (2024)",
-        "value": 0.1156
+        "value": 0.1311
       },
       {
         "label": "Raw CPS PE-computed (2024)",
-        "value": 0.1354
+        "value": 0.1384
       },
       {
         "label": "Enhanced CPS reported (2024)",
@@ -26,19 +26,19 @@
       {
         "from": "Census published (2024)",
         "to": "Raw CPS reported (2024)",
-        "delta": -0.0184,
+        "delta": -0.0029,
         "explanation": "Public-use ASEC vs internal Census file (privacy edits, minor corrections)"
       },
       {
         "from": "Raw CPS reported (2024)",
         "to": "Raw CPS PE-computed (2024)",
-        "delta": 0.0198,
+        "delta": 0.0073,
         "explanation": "PE tax/benefit modeling on raw CPS data"
       },
       {
         "from": "Raw CPS PE-computed (2024)",
         "to": "Enhanced CPS reported (2024)",
-        "delta": 0.049,
+        "delta": 0.046,
         "explanation": "Enhanced CPS weight recalibration to IRS SOI targets + PUF income imputation"
       },
       {
@@ -53,72 +53,72 @@
     "groups": [
       {
         "label": "Q1 / single parent",
-        "raw_cps_poverty_rate": 0.6436609154118453,
+        "raw_cps_poverty_rate": 0.6699174794805551,
         "enhanced_cps_poverty_rate": 0.6732471990494041,
-        "raw_cps_child_share": 0.092108906720638,
+        "raw_cps_child_share": 0.09453229714524093,
         "enhanced_cps_child_share": 0.09682547213582486
       },
       {
         "label": "Q1 / married",
-        "raw_cps_poverty_rate": 0.6905660374181813,
+        "raw_cps_poverty_rate": 0.7021791771548398,
         "enhanced_cps_poverty_rate": 0.6585557987638717,
-        "raw_cps_child_share": 0.036622443387002754,
+        "raw_cps_child_share": 0.029288705367206142,
         "enhanced_cps_child_share": 0.057762423611934094
       },
       {
         "label": "Q2 / single parent",
-        "raw_cps_poverty_rate": 0.18144329963388137,
+        "raw_cps_poverty_rate": 0.1834556370271763,
         "enhanced_cps_poverty_rate": 0.2605831963852913,
-        "raw_cps_child_share": 0.10053897303523696,
+        "raw_cps_child_share": 0.10630451878027587,
         "enhanced_cps_child_share": 0.10409544008246445
       },
       {
         "label": "Q2 / married",
-        "raw_cps_poverty_rate": 0.21025930083410171,
+        "raw_cps_poverty_rate": 0.1993690850830984,
         "enhanced_cps_poverty_rate": 0.397102703513249,
-        "raw_cps_child_share": 0.12258153757904686,
+        "raw_cps_child_share": 0.11240337618917116,
         "enhanced_cps_child_share": 0.09690879186669737
       },
       {
         "label": "Q3 / single parent",
-        "raw_cps_poverty_rate": 0.023385300780333015,
+        "raw_cps_poverty_rate": 0.09617486316815056,
         "enhanced_cps_poverty_rate": 0.09320921215130783,
-        "raw_cps_child_share": 0.062050858223079944,
+        "raw_cps_child_share": 0.06488901108100348,
         "enhanced_cps_child_share": 0.10068454384054487
       },
       {
         "label": "Q3 / married",
-        "raw_cps_poverty_rate": 0.017775752097583877,
+        "raw_cps_poverty_rate": 0.03142983620562528,
         "enhanced_cps_poverty_rate": 0.1290992767429825,
-        "raw_cps_child_share": 0.15160310114514897,
+        "raw_cps_child_share": 0.16020138393287234,
         "enhanced_cps_child_share": 0.13777806318100813
       },
       {
         "label": "Q4 / single parent",
-        "raw_cps_poverty_rate": 0.05236486487305932,
+        "raw_cps_poverty_rate": 0.007142857169810564,
         "enhanced_cps_poverty_rate": 0.025198826822540325,
-        "raw_cps_child_share": 0.040906577233110156,
+        "raw_cps_child_share": 0.03971349112406664,
         "enhanced_cps_child_share": 0.0483699756609119
       },
       {
         "label": "Q4 / married",
-        "raw_cps_poverty_rate": 0.0026676829331899812,
+        "raw_cps_poverty_rate": 0.005426356603962139,
         "enhanced_cps_poverty_rate": 0.12233962234778019,
-        "raw_cps_child_share": 0.18131564982733356,
+        "raw_cps_child_share": 0.18296575149631428,
         "enhanced_cps_child_share": 0.14565985537416457
       },
       {
         "label": "Q5 / single parent",
         "raw_cps_poverty_rate": 0.0,
         "enhanced_cps_poverty_rate": 0.0025702009894287173,
-        "raw_cps_child_share": 0.016238253644922537,
+        "raw_cps_child_share": 0.019502163038161043,
         "enhanced_cps_child_share": 0.038695502579250175
       },
       {
         "label": "Q5 / married",
         "raw_cps_poverty_rate": 0.0,
         "enhanced_cps_poverty_rate": 0.06151588203035235,
-        "raw_cps_child_share": 0.19603372279081002,
+        "raw_cps_child_share": 0.19019928175043752,
         "enhanced_cps_child_share": 0.1732199316671996
       }
     ]
@@ -504,10 +504,10 @@
     }
   ],
   "metadata": {
-    "generated_at": "2026-02-01T03:50:58Z",
+    "generated_at": "2026-02-01T04:37:54Z",
     "policyengine_us_version": "1.534.5",
-    "raw_cps_dataset": "hf://policyengine/policyengine-us-data/cps_2023.h5",
+    "raw_cps_dataset": "/Users/maxghenis/policyengine-us-data/policyengine_us_data/storage/cps_2024.h5",
     "enhanced_cps_dataset": "hf://policyengine/policyengine-us-data/enhanced_cps_2024.h5",
-    "total_runtime_seconds": 370.1
+    "total_runtime_seconds": 326.5
   }
 }
