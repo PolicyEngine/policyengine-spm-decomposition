@@ -2,9 +2,29 @@
 
 This project investigates why PolicyEngine's SPM poverty estimates differ from Census published rates and external analyses like Roosevelt Institute.
 
-## Key findings
+## Key finding: Weight recalibration is the main driver
 
-### SSI household poverty rate gap
+**The Enhanced CPS weight recalibration explains ~5pp of the poverty gap. Benefit computation differences explain only ~1-2pp.**
+
+| Income bracket | Raw CPS | Enhanced CPS | Change |
+|---------------|---------|--------------|--------|
+| Deep poverty (<50%) | 3.2% | 3.7% | +0.5pp |
+| **Poverty (50-100%)** | **9.2%** | **13.6%** | **+4.4pp** |
+| Higher (400%+) | 21.5% | 15.8% | -5.7pp |
+
+The weight recalibration to IRS/SOI targets shifts population weight toward lower-income households, mechanically increasing measured poverty. This is NOT an error - the Enhanced CPS is calibrated to match the IRS income distribution, which reveals that the raw CPS underweights low-income households.
+
+### Poverty rate waterfall
+
+| Step | All-person poverty | Δ |
+|------|-------------------|---|
+| Census published | 11.6% | — |
+| Raw CPS + reported income | 13.4% | +1.8pp |
+| Raw CPS + PE income | 14.5% | +1.1pp |
+| Enhanced CPS + reported income | 18.6% | +5.2pp |
+| Enhanced CPS + PE income | 20.3% | +1.7pp |
+
+## SSI household poverty rate gap
 
 | Source | Baseline poverty |
 |--------|------------------|
