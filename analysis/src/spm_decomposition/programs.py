@@ -53,6 +53,9 @@ def _program_effect(
     rate_with = float(np.average(is_poor[is_child], weights=child_pw))
     rate_without = float(np.average(poor_without[is_child], weights=child_pw))
 
+    all_rate_with = float(np.average(is_poor, weights=pw))
+    all_rate_without = float(np.average(poor_without, weights=pw))
+
     children_lifted = float(((poor_without - is_poor) * pw)[is_child].sum())
     total_lifted = float(((poor_without - is_poor) * pw).sum())
 
@@ -67,6 +70,8 @@ def _program_effect(
         "total_lifted": total_lifted,
         "rate_with": rate_with,
         "rate_without": rate_without,
+        "all_persons_rate_with": all_rate_with,
+        "all_persons_rate_without": all_rate_without,
         "total_benefit_B": total_benefit / 1e9,
     }
 

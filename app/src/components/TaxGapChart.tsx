@@ -88,10 +88,9 @@ export function TaxGapChart({ deciles }: TaxGapChartProps) {
       </Title>
       <Text size="md" c="dimmed" mb="lg" maw={720}>
         Mean federal tax per household as computed by PolicyEngine vs. as
-        reported in the CPS, broken out by income decile. The top decile
-        shows the largest gap: PolicyEngine computes substantially higher
-        taxes, reflecting PUF-imputed capital gains and other income
-        sources.
+        reported in the CPS, broken out by income decile. Positive gaps
+        mean PE computes higher taxes than CPS reports; negative gaps mean
+        CPS-reported taxes exceed PE estimates.
       </Text>
 
       <ResponsiveContainer width="100%" height={420}>

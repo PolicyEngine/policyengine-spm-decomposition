@@ -11,11 +11,11 @@
       },
       {
         "label": "Raw CPS PE-computed (2024)",
-        "value": 0.1384
+        "value": 0.1378
       },
       {
         "label": "Enhanced CPS PE-computed (2024)",
-        "value": 0.2258
+        "value": 0.2267
       }
     ],
     "deltas": [
@@ -28,13 +28,53 @@
       {
         "from": "Raw CPS reported (2024)",
         "to": "Raw CPS PE-computed (2024)",
-        "delta": 0.0073,
+        "delta": 0.0067,
         "explanation": "PE tax/benefit modeling on raw CPS data (replaces CPS-reported taxes/benefits with PE-computed values)"
       },
       {
         "from": "Raw CPS PE-computed (2024)",
         "to": "Enhanced CPS PE-computed (2024)",
-        "delta": 0.0874,
+        "delta": 0.0889,
+        "explanation": "Enhanced CPS weight recalibration to IRS SOI targets + PUF income imputation shifts population toward lower-income households"
+      }
+    ]
+  },
+  "all_persons_waterfall": {
+    "steps": [
+      {
+        "label": "Census published (2024)",
+        "value": 0.116
+      },
+      {
+        "label": "Raw CPS reported (2024)",
+        "value": 0.1338
+      },
+      {
+        "label": "Raw CPS PE-computed (2024)",
+        "value": 0.1451
+      },
+      {
+        "label": "Enhanced CPS PE-computed (2024)",
+        "value": 0.2107
+      }
+    ],
+    "deltas": [
+      {
+        "from": "Census published (2024)",
+        "to": "Raw CPS reported (2024)",
+        "delta": 0.0178,
+        "explanation": "Public-use ASEC vs internal Census file (privacy edits, minor corrections)"
+      },
+      {
+        "from": "Raw CPS reported (2024)",
+        "to": "Raw CPS PE-computed (2024)",
+        "delta": 0.0113,
+        "explanation": "PE tax/benefit modeling on raw CPS data (replaces CPS-reported taxes/benefits with PE-computed values)"
+      },
+      {
+        "from": "Raw CPS PE-computed (2024)",
+        "to": "Enhanced CPS PE-computed (2024)",
+        "delta": 0.0656,
         "explanation": "Enhanced CPS weight recalibration to IRS SOI targets + PUF income imputation shifts population toward lower-income households"
       }
     ]
@@ -43,81 +83,97 @@
     {
       "program": "snap",
       "label": "SNAP",
-      "children_lifted": 2762149,
-      "total_lifted": 6063223,
-      "rate_with": 0.2258,
-      "rate_without": 0.2644,
-      "total_benefit_B": 91.9,
+      "children_lifted": 2544424,
+      "total_lifted": 5634800,
+      "rate_with": 0.2267,
+      "rate_without": 0.2619,
+      "all_persons_rate_with": 0.2107,
+      "all_persons_rate_without": 0.2274,
+      "total_benefit_B": 93.8,
       "census_children_lifted_M": 1.4
     },
     {
       "program": "social_security",
       "label": "Social Security",
-      "children_lifted": 2939324,
-      "total_lifted": 30994721,
-      "rate_with": 0.2258,
-      "rate_without": 0.2669,
-      "total_benefit_B": 1450.6,
+      "children_lifted": 2010433,
+      "total_lifted": 28763325,
+      "rate_with": 0.2267,
+      "rate_without": 0.2545,
+      "all_persons_rate_with": 0.2107,
+      "all_persons_rate_without": 0.2963,
+      "total_benefit_B": 1445.2,
       "census_children_lifted_M": null
     },
     {
       "program": "ssi",
       "label": "SSI",
-      "children_lifted": 719569,
-      "total_lifted": 2784871,
-      "rate_with": 0.2258,
-      "rate_without": 0.2359,
-      "total_benefit_B": 55.6,
+      "children_lifted": 1129129,
+      "total_lifted": 3013275,
+      "rate_with": 0.2267,
+      "rate_without": 0.2423,
+      "all_persons_rate_with": 0.2107,
+      "all_persons_rate_without": 0.2196,
+      "total_benefit_B": 57.4,
       "census_children_lifted_M": 0.5
     },
     {
       "program": "housing",
       "label": "Housing subsidies",
-      "children_lifted": 661264,
-      "total_lifted": 3414613,
-      "rate_with": 0.2258,
-      "rate_without": 0.235,
-      "total_benefit_B": 34.2,
+      "children_lifted": 556883,
+      "total_lifted": 2755795,
+      "rate_with": 0.2267,
+      "rate_without": 0.2344,
+      "all_persons_rate_with": 0.2107,
+      "all_persons_rate_without": 0.2189,
+      "total_benefit_B": 35.4,
       "census_children_lifted_M": null
     },
     {
       "program": "school_meals",
       "label": "School meals",
-      "children_lifted": 1823920,
-      "total_lifted": 3041843,
-      "rate_with": 0.2258,
-      "rate_without": 0.2513,
-      "total_benefit_B": 22.8,
+      "children_lifted": 1163311,
+      "total_lifted": 2023316,
+      "rate_with": 0.2267,
+      "rate_without": 0.2428,
+      "all_persons_rate_with": 0.2107,
+      "all_persons_rate_without": 0.2167,
+      "total_benefit_B": 21.0,
       "census_children_lifted_M": null
     },
     {
       "program": "eitc",
       "label": "EITC",
-      "children_lifted": 3328373,
-      "total_lifted": 6330686,
-      "rate_with": 0.2258,
-      "rate_without": 0.2723,
-      "total_benefit_B": 48.2,
+      "children_lifted": 2972448,
+      "total_lifted": 5383701,
+      "rate_with": 0.2267,
+      "rate_without": 0.2678,
+      "all_persons_rate_with": 0.2107,
+      "all_persons_rate_without": 0.2267,
+      "total_benefit_B": 49.4,
       "census_children_lifted_M": null
     },
     {
       "program": "refundable_ctc",
       "label": "Refundable CTC",
-      "children_lifted": 1959191,
-      "total_lifted": 3430606,
-      "rate_with": 0.2258,
-      "rate_without": 0.2532,
-      "total_benefit_B": 30.6,
+      "children_lifted": 1291419,
+      "total_lifted": 2238253,
+      "rate_with": 0.2267,
+      "rate_without": 0.2446,
+      "all_persons_rate_with": 0.2107,
+      "all_persons_rate_without": 0.2173,
+      "total_benefit_B": 32.7,
       "census_children_lifted_M": null
     },
     {
       "program": "refundable_credits",
       "label": "EITC + refundable CTC",
-      "children_lifted": 4694697,
-      "total_lifted": 8817017,
-      "rate_with": 0.2258,
-      "rate_without": 0.2914,
-      "total_benefit_B": 78.8,
+      "children_lifted": 5202672,
+      "total_lifted": 9348176,
+      "rate_with": 0.2267,
+      "rate_without": 0.2987,
+      "all_persons_rate_with": 0.2107,
+      "all_persons_rate_without": 0.2385,
+      "total_benefit_B": 82.1,
       "census_children_lifted_M": 3.7
     }
   ],
@@ -125,59 +181,59 @@
     "by_age": [
       {
         "group": "Under 6",
-        "pe_rate": 0.2506,
+        "pe_rate": 0.2391,
         "census_rate": 0.151,
-        "total_children": 22059144
+        "total_children": 22219532
       },
       {
         "group": "6-11",
-        "pe_rate": 0.2001,
+        "pe_rate": 0.217,
         "census_rate": 0.126,
-        "total_children": 23944104
+        "total_children": 24217020
       },
       {
         "group": "12-17",
-        "pe_rate": 0.2286,
+        "pe_rate": 0.2251,
         "census_rate": 0.125,
-        "total_children": 25552428
+        "total_children": 25791542
       }
     ],
     "by_race": [
       {
         "group": "White",
-        "pe_rate": 0.2068,
+        "pe_rate": 0.2064,
         "census_rate": 0.11,
-        "total_children": 51426616
+        "total_children": 51256112
       },
       {
         "group": "Black",
-        "pe_rate": 0.2991,
+        "pe_rate": 0.3476,
         "census_rate": 0.21,
-        "total_children": 11187046
+        "total_children": 12897408
       },
       {
         "group": "American Indian",
-        "pe_rate": 0.2775,
+        "pe_rate": 0.2463,
         "census_rate": null,
-        "total_children": 1062724
+        "total_children": 771784
       },
       {
         "group": "Asian",
-        "pe_rate": 0.1522,
+        "pe_rate": 0.1696,
         "census_rate": 0.11,
-        "total_children": 3083013
+        "total_children": 2506339
       },
       {
         "group": "Hispanic (any race)",
         "pe_rate": 0.2723,
         "census_rate": 0.2,
-        "total_children": 20272368
+        "total_children": 21224102
       },
       {
         "group": "Non-Hispanic",
-        "pe_rate": 0.2074,
+        "pe_rate": 0.2077,
         "census_rate": null,
-        "total_children": 51283312
+        "total_children": 51003996
       }
     ]
   },
@@ -186,153 +242,153 @@
       {
         "label": "Q1 / single parent",
         "raw_cps_poverty_rate": 0.6699174794805551,
-        "enhanced_cps_poverty_rate": 0.6732471990494041,
+        "enhanced_cps_poverty_rate": 0.6740472791296619,
         "raw_cps_child_share": 0.09453229714524093,
-        "enhanced_cps_child_share": 0.09682547213582486
+        "enhanced_cps_child_share": 0.09925058802602245
       },
       {
         "label": "Q1 / married",
-        "raw_cps_poverty_rate": 0.7021791771548398,
-        "enhanced_cps_poverty_rate": 0.6585557987638717,
+        "raw_cps_poverty_rate": 0.7094430997048566,
+        "enhanced_cps_poverty_rate": 0.8676898872425446,
         "raw_cps_child_share": 0.029288705367206142,
-        "enhanced_cps_child_share": 0.057762423611934094
+        "enhanced_cps_child_share": 0.05853431329547992
       },
       {
         "label": "Q2 / single parent",
-        "raw_cps_poverty_rate": 0.1834556370271763,
-        "enhanced_cps_poverty_rate": 0.2605831963852913,
+        "raw_cps_poverty_rate": 0.18012007997079016,
+        "enhanced_cps_poverty_rate": 0.2528737205065437,
         "raw_cps_child_share": 0.10630451878027587,
-        "enhanced_cps_child_share": 0.10409544008246445
+        "enhanced_cps_child_share": 0.10720944381532638
       },
       {
         "label": "Q2 / married",
-        "raw_cps_poverty_rate": 0.1993690850830984,
-        "enhanced_cps_poverty_rate": 0.397102703513249,
+        "raw_cps_poverty_rate": 0.1968454257710164,
+        "enhanced_cps_poverty_rate": 0.3630980307990514,
         "raw_cps_child_share": 0.11240337618917116,
-        "enhanced_cps_child_share": 0.09690879186669737
+        "enhanced_cps_child_share": 0.1105644471093354
       },
       {
         "label": "Q3 / single parent",
         "raw_cps_poverty_rate": 0.09617486316815056,
-        "enhanced_cps_poverty_rate": 0.09320921215130783,
+        "enhanced_cps_poverty_rate": 0.02598521134381487,
         "raw_cps_child_share": 0.06488901108100348,
-        "enhanced_cps_child_share": 0.10068454384054487
+        "enhanced_cps_child_share": 0.07391130038925572
       },
       {
         "label": "Q3 / married",
-        "raw_cps_poverty_rate": 0.03142983620562528,
-        "enhanced_cps_poverty_rate": 0.1290992767429825,
+        "raw_cps_poverty_rate": 0.03054448870436572,
+        "enhanced_cps_poverty_rate": 0.07183477913471101,
         "raw_cps_child_share": 0.16020138393287234,
-        "enhanced_cps_child_share": 0.13777806318100813
+        "enhanced_cps_child_share": 0.13972914362854033
       },
       {
         "label": "Q4 / single parent",
         "raw_cps_poverty_rate": 0.007142857169810564,
-        "enhanced_cps_poverty_rate": 0.025198826822540325,
+        "enhanced_cps_poverty_rate": 0.057544641256994336,
         "raw_cps_child_share": 0.03971349112406664,
-        "enhanced_cps_child_share": 0.0483699756609119
+        "enhanced_cps_child_share": 0.040018270729440246
       },
       {
         "label": "Q4 / married",
         "raw_cps_poverty_rate": 0.005426356603962139,
-        "enhanced_cps_poverty_rate": 0.12233962234778019,
+        "enhanced_cps_poverty_rate": 0.10503231184320301,
         "raw_cps_child_share": 0.18296575149631428,
-        "enhanced_cps_child_share": 0.14565985537416457
+        "enhanced_cps_child_share": 0.15776057560758627
       },
       {
         "label": "Q5 / single parent",
         "raw_cps_poverty_rate": 0.0,
-        "enhanced_cps_poverty_rate": 0.0025702009894287173,
+        "enhanced_cps_poverty_rate": 0.003149161475525396,
         "raw_cps_child_share": 0.019502163038161043,
-        "enhanced_cps_child_share": 0.038695502579250175
+        "enhanced_cps_child_share": 0.03975233543467628
       },
       {
         "label": "Q5 / married",
         "raw_cps_poverty_rate": 0.0,
-        "enhanced_cps_poverty_rate": 0.06151588203035235,
+        "enhanced_cps_poverty_rate": 0.06220237197646685,
         "raw_cps_child_share": 0.19019928175043752,
-        "enhanced_cps_child_share": 0.1732199316671996
+        "enhanced_cps_child_share": 0.17326958196433698
       }
     ]
   },
   "tax_gap_by_decile": [
     {
       "decile": 1,
-      "mean_income": 8796.77,
-      "pe_federal_tax": -163.34,
-      "reported_federal_tax": -671.95,
-      "gap": 508.61
+      "mean_income": 8887.23,
+      "pe_federal_tax": 1271.08,
+      "reported_federal_tax": -787.25,
+      "gap": 2058.33
     },
     {
       "decile": 2,
-      "mean_income": 24844.49,
-      "pe_federal_tax": 982.18,
-      "reported_federal_tax": -1037.86,
-      "gap": 2020.03
+      "mean_income": 24036.34,
+      "pe_federal_tax": 447.68,
+      "reported_federal_tax": -1322.61,
+      "gap": 1770.29
     },
     {
       "decile": 3,
-      "mean_income": 36932.27,
-      "pe_federal_tax": 4026.41,
-      "reported_federal_tax": -493.48,
-      "gap": 4519.89
+      "mean_income": 35043.9,
+      "pe_federal_tax": 4302.45,
+      "reported_federal_tax": -394.09,
+      "gap": 4696.53
     },
     {
       "decile": 4,
-      "mean_income": 49400.42,
-      "pe_federal_tax": 1983.93,
-      "reported_federal_tax": 858.36,
-      "gap": 1125.57
+      "mean_income": 48289.18,
+      "pe_federal_tax": 1182.53,
+      "reported_federal_tax": 705.98,
+      "gap": 476.54
     },
     {
       "decile": 5,
-      "mean_income": 63154.37,
-      "pe_federal_tax": 3959.8,
-      "reported_federal_tax": 1814.69,
-      "gap": 2145.11
+      "mean_income": 62365.75,
+      "pe_federal_tax": 5467.73,
+      "reported_federal_tax": 2144.83,
+      "gap": 3322.9
     },
     {
       "decile": 6,
-      "mean_income": 79668.35,
-      "pe_federal_tax": 5319.9,
-      "reported_federal_tax": 4351.82,
-      "gap": 968.08
+      "mean_income": 77823.8,
+      "pe_federal_tax": 9734.01,
+      "reported_federal_tax": 4086.39,
+      "gap": 5647.62
     },
     {
       "decile": 7,
-      "mean_income": 99348.32,
-      "pe_federal_tax": 10131.48,
-      "reported_federal_tax": 7717.89,
-      "gap": 2413.58
+      "mean_income": 98051.61,
+      "pe_federal_tax": 9714.14,
+      "reported_federal_tax": 8644.45,
+      "gap": 1069.69
     },
     {
       "decile": 8,
-      "mean_income": 127433.32,
-      "pe_federal_tax": 10861.56,
-      "reported_federal_tax": 10090.54,
-      "gap": 771.02
+      "mean_income": 126774.43,
+      "pe_federal_tax": 15564.14,
+      "reported_federal_tax": 10084.99,
+      "gap": 5479.15
     },
     {
       "decile": 9,
-      "mean_income": 171085.29,
-      "pe_federal_tax": 23286.46,
-      "reported_federal_tax": 20322.85,
-      "gap": 2963.61
+      "mean_income": 172607.08,
+      "pe_federal_tax": 23678.85,
+      "reported_federal_tax": 20203.14,
+      "gap": 3475.71
     },
     {
       "decile": 10,
-      "mean_income": 388846.45,
-      "pe_federal_tax": 76628.71,
-      "reported_federal_tax": 78358.55,
-      "gap": -1729.84
+      "mean_income": 390806.98,
+      "pe_federal_tax": 67596.73,
+      "reported_federal_tax": 75977.12,
+      "gap": -8380.4
     }
   ],
   "state_results": [],
   "metadata": {
-    "generated_at": "2026-02-01T16:41:32Z",
+    "generated_at": "2026-02-08T04:33:45Z",
     "policyengine_us_version": "1.534.5",
-    "raw_cps_dataset": "/Users/maxghenis/policyengine-us-data/policyengine_us_data/storage/cps_2024.h5",
+    "raw_cps_dataset": "/Users/maxghenis/PolicyEngine/policyengine-us-data/policyengine_us_data/storage/cps_2024.h5",
     "enhanced_cps_dataset": "hf://policyengine/policyengine-us-data/enhanced_cps_2024.h5",
-    "total_runtime_seconds": 36.6
+    "total_runtime_seconds": 32.4
   }
 }

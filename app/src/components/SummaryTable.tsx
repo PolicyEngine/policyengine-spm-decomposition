@@ -1,13 +1,14 @@
 import { Box, Title, Text, Table } from "@mantine/core";
-import type { DecompositionData } from "../types/decomposition";
+import type { Waterfall, PopulationView } from "../types/decomposition";
 import { PE_COLORS } from "../theme";
 import { formatPercent, formatPP } from "../utils/formatters";
 
 interface SummaryTableProps {
-  waterfall: DecompositionData["waterfall"];
+  waterfall: Waterfall;
+  populationView?: PopulationView;
 }
 
-export function SummaryTable({ waterfall }: SummaryTableProps) {
+export function SummaryTable({ waterfall, populationView = "children" }: SummaryTableProps) {
   const { steps, deltas } = waterfall;
 
   const rows = steps.map((step, i) => {
@@ -50,12 +51,13 @@ export function SummaryTable({ waterfall }: SummaryTableProps) {
   return (
     <Box>
       <Title order={2} mb="xs">
-        Decomposition summary
+        {populationView === "children" ? "Child" : "All-person"} poverty decomposition summary
       </Title>
       <Text size="md" c="dimmed" mb="lg" maw={720}>
-        The table below shows each step in the decomposition, from the
-        Census published rate to PolicyEngine's final estimate, along with
-        the percentage point change and explanation for each transition.
+        Each step from the Census published{" "}
+        {populationView === "children" ? "child" : "all-person"} poverty rate
+        to PolicyEngine's final estimate, with the percentage point change and
+        explanation for each transition.
       </Text>
 
       <Table

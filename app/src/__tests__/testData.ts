@@ -38,6 +38,34 @@ export const TEST_DATA: DecompositionData = {
       },
     ],
   },
+  all_persons_waterfall: {
+    steps: [
+      { label: "Census published (2024)", value: 0.116 },
+      { label: "Raw CPS reported (2024)", value: 0.1341 },
+      { label: "Raw CPS PE-computed (2024)", value: 0.1452 },
+      { label: "Enhanced CPS PE-computed (2024)", value: 0.2031 },
+    ],
+    deltas: [
+      {
+        from: "Census published (2024)",
+        to: "Raw CPS reported (2024)",
+        delta: 0.0181,
+        explanation: "Public-use ASEC vs internal Census file",
+      },
+      {
+        from: "Raw CPS reported (2024)",
+        to: "Raw CPS PE-computed (2024)",
+        delta: 0.0111,
+        explanation: "PE tax/benefit modeling on raw CPS data",
+      },
+      {
+        from: "Raw CPS PE-computed (2024)",
+        to: "Enhanced CPS PE-computed (2024)",
+        delta: 0.0579,
+        explanation: "Enhanced CPS weight recalibration to IRS SOI targets",
+      },
+    ],
+  },
   weight_rebalancing: {
     groups: [
       {

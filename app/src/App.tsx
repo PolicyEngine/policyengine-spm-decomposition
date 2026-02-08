@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Container,
   Text,
@@ -6,6 +7,7 @@ import {
   Stack,
   Divider,
   Box,
+  SegmentedControl,
 } from "@mantine/core";
 import { useDecompositionData } from "./hooks/useDecompositionData";
 import { HeroSection } from "./components/HeroSection";
@@ -18,9 +20,12 @@ import { StatePovertyChart } from "./components/StatePovertyChart";
 import { SummaryTable } from "./components/SummaryTable";
 import { MethodologySection } from "./components/MethodologySection";
 import { PE_COLORS } from "./theme";
+import type { PopulationView } from "./types/decomposition";
 
 export default function App() {
   const { data, loading, error } = useDecompositionData();
+  const [populationView, setPopulationView] =
+    useState<PopulationView>("children");
 
   if (loading) {
     return (
@@ -45,8 +50,15 @@ export default function App() {
 
   if (!data) return null;
 
-  // Check if the raw JSON has the _WARNING field
-  const hasWarning = "__WARNING" in data || "_WARNING" in (data as unknown as Record<string, unknown>);
+  const hasWarning =
+    "__WARNING" in data ||
+    "_WARNING" in (data as unknown as Record<string, unknown>);
+
+  const hasAllPersons = !!data.all_persons_waterfall;
+  const activeWaterfall =
+    populationView === "all_persons" && data.all_persons_waterfall
+      ? data.all_persons_waterfall
+      : data.waterfall;
 
   return (
     <Box
@@ -57,29 +69,56 @@ export default function App() {
     >
       <Container size="lg" py="xl">
         <Stack gap="xl">
-          <HeroSection data={data} hasWarning={hasWarning} />
+          <HeroSection
+            data={data}
+            hasWarning={hasWarning}
+            populationView={populationView}
+          />
+
+          {hasAllPersons && (
+            <Box>
+              <SegmentedControl
+                value={populationView}
+                onChange={(v) => setPopulationView(v as PopulationView)}
+                data={[
+                  { label: "Children", value: "children" },
+                  { label: "All persons", value: "all_persons" },
+                ]}
+                color="teal"
+                size="md"
+              />
+            </Box>
+          )}
 
           <Divider />
 
-          <WaterfallChart waterfall={data.waterfall} />
+          <WaterfallChart
+            waterfall={activeWaterfall}
+            populationLabel={
+              populationView === "children" ? "child" : "all-person"
+            }
+          />
 
           <Divider />
 
           {data.program_effects && data.program_effects.length > 0 && (
             <>
-              <ProgramEffectsChart programs={data.program_effects} />
+              <ProgramEffectsChart
+                programs={data.program_effects}
+                populationView={populationView}
+              />
               <Divider />
             </>
           )}
 
-          {data.demographics && (
+          {data.demographics && populationView === "children" && (
             <>
               <DemographicChart demographics={data.demographics} />
               <Divider />
             </>
           )}
 
-          <SummaryTable waterfall={data.waterfall} />
+          <SummaryTable waterfall={activeWaterfall} populationView={populationView} />
 
           <Divider />
 
@@ -93,9 +132,12 @@ export default function App() {
 
           <Divider />
 
-          <StatePovertyChart states={data.state_results} />
-
-          <Divider />
+          {data.state_results && data.state_results.length > 0 && (
+            <>
+              <StatePovertyChart states={data.state_results} />
+              <Divider />
+            </>
+          )}
 
           <MethodologySection metadata={data.metadata} />
 

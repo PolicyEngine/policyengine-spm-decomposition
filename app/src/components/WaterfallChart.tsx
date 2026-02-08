@@ -9,13 +9,14 @@ import {
   ResponsiveContainer,
   ReferenceLine,
 } from "recharts";
-import type { DecompositionData } from "../types/decomposition";
+import type { Waterfall } from "../types/decomposition";
 import { PE_COLORS } from "../theme";
 import { CHART_MARGIN, CHART_COLORS, CHART_FONT } from "../utils/chartConfig";
 import { formatPercent, formatPP } from "../utils/formatters";
 
 interface WaterfallChartProps {
-  waterfall: DecompositionData["waterfall"];
+  waterfall: Waterfall;
+  populationLabel?: string;
 }
 
 interface WaterfallBarData {
@@ -29,7 +30,7 @@ interface WaterfallBarData {
 }
 
 function buildWaterfallData(
-  waterfall: DecompositionData["waterfall"],
+  waterfall: Waterfall,
 ): WaterfallBarData[] {
   const { steps, deltas } = waterfall;
   const items: WaterfallBarData[] = [];
@@ -106,7 +107,10 @@ function CustomTooltip({
   );
 }
 
-export function WaterfallChart({ waterfall }: WaterfallChartProps) {
+export function WaterfallChart({
+  waterfall,
+  populationLabel = "child",
+}: WaterfallChartProps) {
   const data = buildWaterfallData(waterfall);
 
   return (
@@ -115,10 +119,10 @@ export function WaterfallChart({ waterfall }: WaterfallChartProps) {
         Waterfall decomposition
       </Title>
       <Text size="md" c="dimmed" mb="lg" maw={720}>
-        Each step shows how the SPM child poverty rate changes from the
-        Census published figure to PolicyEngine's final estimate. Bars in
-        red indicate increases in the poverty rate; green bars indicate
-        decreases.
+        Each step shows how the SPM {populationLabel} poverty rate changes
+        from the Census published figure to PolicyEngine's final estimate.
+        Bars in red indicate increases in the poverty rate; green bars
+        indicate decreases.
       </Text>
 
       <ResponsiveContainer width="100%" height={420}>

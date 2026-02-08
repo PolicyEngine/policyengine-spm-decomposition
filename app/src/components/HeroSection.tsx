@@ -7,19 +7,32 @@ import {
   Alert,
   Paper,
 } from "@mantine/core";
-import type { DecompositionData } from "../types/decomposition";
+import type { DecompositionData, PopulationView } from "../types/decomposition";
 import { PE_COLORS } from "../theme";
 import { LOGO_URL } from "../utils/chartConfig";
 
 interface HeroSectionProps {
   data: DecompositionData;
   hasWarning?: boolean;
+  populationView: PopulationView;
 }
 
-export function HeroSection({ data, hasWarning = false }: HeroSectionProps) {
-  const censusRate = data.waterfall.steps[0]?.value ?? 0;
-  const peRate = data.waterfall.steps.at(-1)?.value ?? 0;
+export function HeroSection({
+  data,
+  hasWarning = false,
+  populationView,
+}: HeroSectionProps) {
+  const waterfall =
+    populationView === "all_persons" && data.all_persons_waterfall
+      ? data.all_persons_waterfall
+      : data.waterfall;
+
+  const censusRate = waterfall.steps[0]?.value ?? 0;
+  const peRate = waterfall.steps.at(-1)?.value ?? 0;
   const gap = peRate - censusRate;
+
+  const populationLabel =
+    populationView === "children" ? "child" : "all-person";
 
   return (
     <Box>
@@ -45,11 +58,11 @@ export function HeroSection({ data, hasWarning = false }: HeroSectionProps) {
               color: PE_COLORS.gray700,
             }}
           >
-            SPM child poverty rate decomposition
+            SPM poverty rate decomposition
           </Title>
           <Text size="lg" c="dimmed" mt="sm" maw={720}>
             Understanding why PolicyEngine and the Census Bureau report
-            different Supplemental Poverty Measure (SPM) child poverty rates
+            different Supplemental Poverty Measure (SPM) poverty rates
           </Text>
         </Box>
         <Image
@@ -75,12 +88,16 @@ export function HeroSection({ data, hasWarning = false }: HeroSectionProps) {
           </Text>
           <Text
             fw={700}
-            style={{ fontSize: "2.5rem", lineHeight: 1, color: PE_COLORS.gray700 }}
+            style={{
+              fontSize: "2.5rem",
+              lineHeight: 1,
+              color: PE_COLORS.gray700,
+            }}
           >
             {(censusRate * 100).toFixed(1)}%
           </Text>
           <Text size="sm" c="dimmed" mt={4}>
-            SPM child poverty rate
+            SPM {populationLabel} poverty rate
           </Text>
         </Paper>
 
@@ -97,12 +114,16 @@ export function HeroSection({ data, hasWarning = false }: HeroSectionProps) {
           </Text>
           <Text
             fw={700}
-            style={{ fontSize: "2.5rem", lineHeight: 1, color: PE_COLORS.teal500 }}
+            style={{
+              fontSize: "2.5rem",
+              lineHeight: 1,
+              color: PE_COLORS.teal500,
+            }}
           >
             {(peRate * 100).toFixed(1)}%
           </Text>
           <Text size="sm" c="dimmed" mt={4}>
-            SPM child poverty rate
+            SPM {populationLabel} poverty rate
           </Text>
         </Paper>
 
@@ -119,7 +140,11 @@ export function HeroSection({ data, hasWarning = false }: HeroSectionProps) {
           </Text>
           <Text
             fw={700}
-            style={{ fontSize: "2.5rem", lineHeight: 1, color: PE_COLORS.error }}
+            style={{
+              fontSize: "2.5rem",
+              lineHeight: 1,
+              color: PE_COLORS.error,
+            }}
           >
             +{(gap * 100).toFixed(1)} pp
           </Text>

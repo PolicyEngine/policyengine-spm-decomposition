@@ -7,12 +7,13 @@ YEAR = 2024
 # PR #502 merged to add it to HuggingFace uploads; using local path until
 # the next dataset build publishes it. Then switch to:
 # "hf://policyengine/policyengine-us-data/cps_2024.h5"
-RAW_CPS_DATASET = "/Users/maxghenis/policyengine-us-data/policyengine_us_data/storage/cps_2024.h5"
+RAW_CPS_DATASET = "/Users/maxghenis/PolicyEngine/policyengine-us-data/policyengine_us_data/storage/cps_2024.h5"
 ENHANCED_CPS_DATASET = "hf://policyengine/policyengine-us-data/enhanced_cps_2024.h5"
 
-# Census published SPM child poverty rate for 2024
+# Census published SPM poverty rates for 2024
 # Source: Census Bureau, "Income and Poverty in the United States: 2024"
 CENSUS_PUBLISHED_CHILD_POVERTY_2024 = 0.134
+CENSUS_PUBLISHED_ALL_PERSON_POVERTY_2024 = 0.116
 
 # State codes (50 states + DC)
 STATES = [

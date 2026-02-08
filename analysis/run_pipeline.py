@@ -13,11 +13,15 @@ from policyengine_us import Microsimulation
 
 from spm_decomposition.config import (
     CENSUS_PUBLISHED_CHILD_POVERTY_2024,
+    CENSUS_PUBLISHED_ALL_PERSON_POVERTY_2024,
     ENHANCED_CPS_DATASET,
     RAW_CPS_DATASET,
     YEAR,
 )
-from spm_decomposition.poverty import compute_child_poverty_rate
+from spm_decomposition.poverty import (
+    compute_child_poverty_rate,
+    compute_all_person_poverty_rate,
+)
 from spm_decomposition.weights import compute_weight_rebalancing
 from spm_decomposition.tax_gap import compute_tax_gap
 from spm_decomposition.states import compute_state_results
@@ -25,71 +29,10 @@ from spm_decomposition.programs import compute_program_effects
 from spm_decomposition.demographics import compute_demographic_breakdowns
 
 
-def main():
-    skip_states = "--skip-states" in sys.argv
-    start = time.time()
-
-    # ── Load simulations ──────────────────────────────────────────────
-    print(f"Loading raw CPS from {RAW_CPS_DATASET}...")
-    t0 = time.time()
-    raw_sim = Microsimulation(dataset=RAW_CPS_DATASET)
-    print(f"  Raw CPS loaded in {time.time() - t0:.1f}s")
-
-    print(f"Loading enhanced CPS from {ENHANCED_CPS_DATASET}...")
-    t0 = time.time()
-    enhanced_sim = Microsimulation(dataset=ENHANCED_CPS_DATASET)
-    print(f"  Enhanced CPS loaded in {time.time() - t0:.1f}s")
-
-    # ── Poverty rates ─────────────────────────────────────────────────
-    print("Computing child poverty rates...")
-    raw_poverty = compute_child_poverty_rate(raw_sim, period=YEAR)
-    enhanced_poverty = compute_child_poverty_rate(enhanced_sim, period=YEAR)
-    print(f"  Raw CPS:      computed={raw_poverty['computed']:.4f}  reported={raw_poverty['reported']:.4f}")
-    print(f"  Enhanced CPS: computed={enhanced_poverty['computed']:.4f}")
-
-    # ── Program effects ──────────────────────────────────────────────
-    print("Computing program effects on poverty (enhanced CPS)...")
-    t0 = time.time()
-    program_effects = compute_program_effects(enhanced_sim, period=YEAR)
-    print(f"  {len(program_effects)} programs in {time.time() - t0:.1f}s")
-    for p in program_effects:
-        print(f"    {p['label']:30s}  lifts {p['children_lifted']/1e6:.2f}M children")
-
-    # ── Demographic breakdowns ────────────────────────────────────────
-    print("Computing demographic breakdowns (enhanced CPS)...")
-    demographics = compute_demographic_breakdowns(enhanced_sim, period=YEAR)
-    print(f"  {len(demographics['by_age'])} age groups, {len(demographics['by_race'])} race groups")
-
-    # ── Weight rebalancing ────────────────────────────────────────────
-    print("Computing weight rebalancing...")
-    weight_rebalancing = compute_weight_rebalancing(raw_sim, enhanced_sim, period=YEAR)
-    print(f"  {len(weight_rebalancing['groups'])} groups")
-
-    # ── Tax gap ───────────────────────────────────────────────────────
-    print("Computing tax gap (enhanced CPS)...")
-    tax_gap = compute_tax_gap(enhanced_sim, period=YEAR)
-    d10 = tax_gap[-1]
-    print(f"  D10 gap: ${d10['gap']:,.0f}")
-
-    # ── State results ─────────────────────────────────────────────────
-    if skip_states:
-        print("Skipping state-level analysis (--skip-states)")
-        state_results = []
-    else:
-        print("Computing state-level results (this takes ~5 min)...")
-        t0 = time.time()
-        state_results = compute_state_results(period=YEAR)
-        print(f"  {len(state_results)} states in {time.time() - t0:.1f}s")
-
-    total_time = time.time() - start
-
-    # ── Build app JSON ────────────────────────────────────────────────
-    census = CENSUS_PUBLISHED_CHILD_POVERTY_2024
-
-    # Waterfall: 3 clean steps (removed "Enhanced CPS reported" which is
-    # meaningless since enhanced CPS has PUF-imputed income fields)
+def _build_waterfall(census_rate, raw_poverty, enhanced_poverty):
+    """Build waterfall steps and deltas from poverty rate dicts."""
     steps = [
-        {"label": "Census published (2024)", "value": round(census, 4)},
+        {"label": "Census published (2024)", "value": round(census_rate, 4)},
         {"label": "Raw CPS reported (2024)", "value": round(raw_poverty["reported"], 4)},
         {"label": "Raw CPS PE-computed (2024)", "value": round(raw_poverty["computed"], 4)},
         {"label": "Enhanced CPS PE-computed (2024)", "value": round(enhanced_poverty["computed"], 4)},
@@ -116,10 +59,87 @@ def main():
         },
     ]
 
+    return {"steps": steps, "deltas": deltas}
+
+
+def main():
+    skip_states = "--skip-states" in sys.argv
+    start = time.time()
+
+    # -- Load simulations --
+    print(f"Loading raw CPS from {RAW_CPS_DATASET}...")
+    t0 = time.time()
+    raw_sim = Microsimulation(dataset=RAW_CPS_DATASET)
+    print(f"  Raw CPS loaded in {time.time() - t0:.1f}s")
+
+    print(f"Loading enhanced CPS from {ENHANCED_CPS_DATASET}...")
+    t0 = time.time()
+    enhanced_sim = Microsimulation(dataset=ENHANCED_CPS_DATASET)
+    print(f"  Enhanced CPS loaded in {time.time() - t0:.1f}s")
+
+    # -- Child poverty rates --
+    print("Computing child poverty rates...")
+    raw_child = compute_child_poverty_rate(raw_sim, period=YEAR)
+    enhanced_child = compute_child_poverty_rate(enhanced_sim, period=YEAR)
+    print(f"  Raw CPS:      computed={raw_child['computed']:.4f}  reported={raw_child['reported']:.4f}")
+    print(f"  Enhanced CPS: computed={enhanced_child['computed']:.4f}")
+
+    # -- All-person poverty rates --
+    print("Computing all-person poverty rates...")
+    raw_all = compute_all_person_poverty_rate(raw_sim, period=YEAR)
+    enhanced_all = compute_all_person_poverty_rate(enhanced_sim, period=YEAR)
+    print(f"  Raw CPS:      computed={raw_all['computed']:.4f}  reported={raw_all['reported']:.4f}")
+    print(f"  Enhanced CPS: computed={enhanced_all['computed']:.4f}")
+
+    # -- Program effects --
+    print("Computing program effects on poverty (enhanced CPS)...")
+    t0 = time.time()
+    program_effects = compute_program_effects(enhanced_sim, period=YEAR)
+    print(f"  {len(program_effects)} programs in {time.time() - t0:.1f}s")
+    for p in program_effects:
+        print(f"    {p['label']:30s}  lifts {p['children_lifted']/1e6:.2f}M children, {p['total_lifted']/1e6:.2f}M total")
+
+    # -- Demographic breakdowns --
+    print("Computing demographic breakdowns (enhanced CPS)...")
+    demographics = compute_demographic_breakdowns(enhanced_sim, period=YEAR)
+    print(f"  {len(demographics['by_age'])} age groups, {len(demographics['by_race'])} race groups")
+
+    # -- Weight rebalancing --
+    print("Computing weight rebalancing...")
+    weight_rebalancing = compute_weight_rebalancing(raw_sim, enhanced_sim, period=YEAR)
+    print(f"  {len(weight_rebalancing['groups'])} groups")
+
+    # -- Tax gap --
+    print("Computing tax gap (enhanced CPS)...")
+    tax_gap = compute_tax_gap(enhanced_sim, period=YEAR)
+    d10 = tax_gap[-1]
+    print(f"  D10 gap: ${d10['gap']:,.0f}")
+
+    # -- State results --
+    if skip_states:
+        print("Skipping state-level analysis (--skip-states)")
+        state_results = []
+    else:
+        print("Computing state-level results (this takes ~5 min)...")
+        t0 = time.time()
+        state_results = compute_state_results(period=YEAR)
+        print(f"  {len(state_results)} states in {time.time() - t0:.1f}s")
+
+    total_time = time.time() - start
+
+    # -- Build waterfalls --
+    child_waterfall = _build_waterfall(
+        CENSUS_PUBLISHED_CHILD_POVERTY_2024, raw_child, enhanced_child,
+    )
+    all_persons_waterfall = _build_waterfall(
+        CENSUS_PUBLISHED_ALL_PERSON_POVERTY_2024, raw_all, enhanced_all,
+    )
+
     from importlib.metadata import version as pkg_version
 
     output = {
-        "waterfall": {"steps": steps, "deltas": deltas},
+        "waterfall": child_waterfall,
+        "all_persons_waterfall": all_persons_waterfall,
         "program_effects": [
             {
                 "program": p["program"],
@@ -128,6 +148,8 @@ def main():
                 "total_lifted": round(p["total_lifted"]),
                 "rate_with": round(p["rate_with"], 4),
                 "rate_without": round(p["rate_without"], 4),
+                "all_persons_rate_with": round(p.get("all_persons_rate_with", p["rate_with"]), 4),
+                "all_persons_rate_without": round(p.get("all_persons_rate_without", p["rate_without"]), 4),
                 "total_benefit_B": round(p["total_benefit_B"], 1),
                 "census_children_lifted_M": p.get("census_children_lifted_M"),
             }
