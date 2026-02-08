@@ -68,10 +68,10 @@ export function MethodologySection({ metadata }: MethodologySectionProps) {
             PolicyEngine US version: {metadata.policyengine_us_version}
           </List.Item>
           <List.Item>
-            Raw CPS dataset: {metadata.raw_cps_dataset}
+            Raw CPS dataset: {metadata.raw_cps_dataset.split("/").pop() ?? metadata.raw_cps_dataset}
           </List.Item>
           <List.Item>
-            Enhanced CPS dataset: {metadata.enhanced_cps_dataset}
+            Enhanced CPS dataset: {metadata.enhanced_cps_dataset.replace("hf://policyengine/policyengine-us-data/", "")}
           </List.Item>
           <List.Item>
             Generated: {new Date(metadata.generated_at).toLocaleDateString()}

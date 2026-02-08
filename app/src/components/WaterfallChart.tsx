@@ -8,6 +8,7 @@ import {
   Cell,
   ResponsiveContainer,
   ReferenceLine,
+  LabelList,
 } from "recharts";
 import type { Waterfall } from "../types/decomposition";
 import { PE_COLORS } from "../theme";
@@ -27,6 +28,7 @@ interface WaterfallBarData {
   delta: number;
   explanation: string;
   isEndpoint: boolean;
+  displayLabel: string;
 }
 
 function buildWaterfallData(
@@ -66,6 +68,9 @@ function buildWaterfallData(
         ? "Starting point"
         : deltas[i - 1]?.explanation ?? "",
       isEndpoint,
+      displayLabel: isEndpoint
+        ? formatPercent(step.value)
+        : formatPP(delta),
     });
   }
 
@@ -150,6 +155,16 @@ export function WaterfallChart({
 
           {/* Visible value bar */}
           <Bar dataKey="value" stackId="stack" radius={[4, 4, 0, 0]}>
+            <LabelList
+              dataKey="displayLabel"
+              position="top"
+              style={{
+                ...CHART_FONT,
+                fontSize: 12,
+                fontWeight: 600,
+                fill: PE_COLORS.gray700,
+              }}
+            />
             {data.map((entry, i) => {
               let fill: string;
               if (entry.isEndpoint) {
