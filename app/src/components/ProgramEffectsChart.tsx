@@ -91,6 +91,12 @@ function CustomTooltip({
       <Text size="sm" mt={4}>
         Total spending: ${row.totalBenefitB.toFixed(0)}B
       </Text>
+      {row.totalBenefitB > 0 && (
+        <Text size="sm">
+          Cost per person lifted: $
+          {Math.round((row.totalBenefitB * 1e9) / row.lifted).toLocaleString()}
+        </Text>
+      )}
       <Text size="sm" c="dimmed" mt={4}>
         Poverty rate: {(row.rateWithout * 100).toFixed(1)}% &rarr;{" "}
         {(row.rateWith * 100).toFixed(1)}%
