@@ -1,4 +1,4 @@
-import "@testing-library/jest-dom/vitest";
+import '@testing-library/jest-dom/vitest';
 
 // Polyfill ResizeObserver for jsdom (used by Recharts)
 class ResizeObserverStub {
@@ -9,7 +9,7 @@ class ResizeObserverStub {
 globalThis.ResizeObserver = ResizeObserverStub as unknown as typeof ResizeObserver;
 
 // Polyfill window.matchMedia for Mantine color scheme detection
-Object.defineProperty(window, "matchMedia", {
+Object.defineProperty(window, 'matchMedia', {
   writable: true,
   value: (query: string) => ({
     matches: false,

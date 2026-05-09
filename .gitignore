@@ -9,6 +9,11 @@ dist/
 # Node
 node_modules/
 app/dist/
+app/.next/
+app/out/
+app/next-env.d.ts
+app/*.tsbuildinfo
+.vercel
 
 # IDE
 .vscode/
