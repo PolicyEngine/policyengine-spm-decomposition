@@ -2,7 +2,7 @@
 name = "spm-decomposition"
 version = "0.1.0"
 description = "Decompose PolicyEngine vs Census SPM child poverty rate divergence"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = [
     "policyengine-us>=1.0.0",
     "numpy",
